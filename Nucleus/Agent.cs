@@ -35,9 +35,7 @@ namespace Nucleus
                 //the _proLogic_zContractContacts list based on contract
                 var ContactHash = new HashSet<string>(_proLogic_zContractContacts);
                 //THis is being sent the Bidding Report Application after post sorting the hash set
-                List<string> _agentResponse = new List<string>();
-                //List<string> _headers = new List<string>();
-                //List<string> _childs = new List<string>();
+                List<string> _agentResponse = new List<string>();                
                 foreach (string item in ContactHash)
                 {                    
                     if (item.Contains("{ Account }")) // this will index be [0]
@@ -67,7 +65,6 @@ namespace Nucleus
             _proLogic_zContractContacts.Add(item);
         }
 #endregion
-
 
 #region Database Connections and SELECT, INSERT, DELETE      
 
@@ -129,19 +126,14 @@ namespace Nucleus
                     {
                         AddzContractContactsLineItem(sqlReader.GetString(2) + " " + "{ Account }");
                         AddzContractContactsLineItem(sqlReader.GetString(3) + " " + "{ Header = Item Level 0 }");
-                        AddzContractContactsLineItem(sqlReader.GetString(5) + " " + "{ Header = Item Level 1" + " " + sqlReader.GetString(3) +" }");                       
-                        //ZContactContracts(sqlReader.GetString(2));
-                        //AddzContractContactsLineItem(sqlReader.GetString(3));
-                        //AddzContractContactsLineItem(sqlReader.GetString(5));
-                        //AddzContractContactsLineItem("-");                       
-                        Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}", sqlReader.GetDecimal(0), sqlReader.GetString(1), sqlReader.GetString(2), sqlReader.GetString(3), sqlReader.GetGuid(4), sqlReader.GetString(5));
+                        AddzContractContactsLineItem(sqlReader.GetString(5) + " " + "{ Header = Item Level 1" + " " + sqlReader.GetString(3) +" }");                                                                     
+                        //Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}", sqlReader.GetDecimal(0), sqlReader.GetString(1), sqlReader.GetString(2), sqlReader.GetString(3), sqlReader.GetGuid(4), sqlReader.GetString(5));
                     }
                 }
                 else
                 {
                     Console.WriteLine("No Rows Found");
                 }
-
 
                 return sqlReader;
             }
