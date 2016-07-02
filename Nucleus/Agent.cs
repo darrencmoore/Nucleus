@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Windows;
 
+
 /// <summary>
 /// Created On: 6/22/2016
 /// By: Darren Moore
@@ -110,24 +111,27 @@ namespace Nucleus
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public SqlDataReader Select(string sql)
+        public SqlDataReader Select(string ID)
         {
             try
             {
-                SqlDataReader sqlReader;                
+                SqlDataReader sqlReader;
+                                
                 _connStr = ConfigurationManager.ConnectionStrings["SYSPRO_SQL_SERVER"].ConnectionString;                                
                 DBOpenConnection();
-                _sqlCommand = new SqlCommand(sql, _sqlConn);
+                _sqlCommand = new SqlCommand("usp_ProjectHeader_ZccPcmPpcmc", _sqlConn);
+                _sqlCommand.CommandType = CommandType.StoredProcedure;
+                _sqlCommand.Parameters.Add(ID);
                 sqlReader = _sqlCommand.ExecuteReader();
                                
                 if (sqlReader.HasRows)
                 {
                     while (sqlReader.Read())
                     {
-                        AddzContractContactsLineItem(sqlReader.GetString(2) + " " + "{ Account }");
-                        AddzContractContactsLineItem(sqlReader.GetString(3) + " " + "{ Header = Item Level 0 }");
-                        AddzContractContactsLineItem(sqlReader.GetString(5) + " " + "{ Header = Item Level 1" + " " + sqlReader.GetString(3) +" }");                                                                     
-                        //Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}", sqlReader.GetDecimal(0), sqlReader.GetString(1), sqlReader.GetString(2), sqlReader.GetString(3), sqlReader.GetGuid(4), sqlReader.GetString(5));
+                        //AddzContractContactsLineItem(sqlReader.GetString(2) + " " + "{ Account }");
+                        //AddzContractContactsLineItem(sqlReader.GetString(3) + " " + "{ Header = Item Level 0 }");
+                        //AddzContractContactsLineItem(sqlReader.GetString(5) + " " + "{ Header = Item Level 1" + " " + sqlReader.GetString(3) +" }");                                                                     
+                        Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7},\t{8},\t{9},\t{10}", sqlReader.GetString(0), sqlReader.GetString(1), sqlReader.GetString(2), sqlReader.GetString(3), sqlReader.GetGuid(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetDateTime(9), sqlReader.GetDateTime(10));
                     }
                 }
                 else
