@@ -38,20 +38,16 @@ namespace Nucleus
                 //THis is being sent the Bidding Report Application after post sorting the hash set
                 List<string> _agentResponse = new List<string>();                
                 foreach (string item in ContactHash)
-                {                    
-                    if (item.Contains("{ Account }")) // this will index be [0]
-                    {
-                        continue;                        
-                    }
+                {  
                     if (item.Contains("{ Header = Item Level 0 }")) // parent
                     {
                         _accountName = item.Replace("{ Header = Item Level 0 }", "");
                         _agentResponse.Add(item);
                         continue;
                     }
-                    if(item.Contains( _accountName))
+                    if(item.Contains("{ Header = Item Level 1 }"))
                     {
-                        _agentResponse.Add(item.Replace(_accountName, ""));
+                        _agentResponse.Add(item);
                     }                   
                 }               
 
@@ -119,19 +115,18 @@ namespace Nucleus
                                 
                 _connStr = ConfigurationManager.ConnectionStrings["SYSPRO_SQL_SERVER"].ConnectionString;                                
                 DBOpenConnection();
-                _sqlCommand = new SqlCommand("usp_ProjectHeader_ZccPcmPpcmc", _sqlConn);
+                _sqlCommand = new SqlCommand("usp_ProjectHeader_ZccPcmPpcmcZcbc", _sqlConn);
                 _sqlCommand.CommandType = CommandType.StoredProcedure;
-                _sqlCommand.Parameters.Add(ID);
+                _sqlCommand.Parameters.Add(new SqlParameter("@Contract", ID));
                 sqlReader = _sqlCommand.ExecuteReader();
                                
                 if (sqlReader.HasRows)
                 {
                     while (sqlReader.Read())
                     {
-                        //AddzContractContactsLineItem(sqlReader.GetString(2) + " " + "{ Account }");
-                        //AddzContractContactsLineItem(sqlReader.GetString(3) + " " + "{ Header = Item Level 0 }");
-                        //AddzContractContactsLineItem(sqlReader.GetString(5) + " " + "{ Header = Item Level 1" + " " + sqlReader.GetString(3) +" }");                                                                     
-                        Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7},\t{8},\t{9},\t{10}", sqlReader.GetString(0), sqlReader.GetString(1), sqlReader.GetString(2), sqlReader.GetString(3), sqlReader.GetGuid(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetDateTime(9), sqlReader.GetDateTime(10));
+                        AddzContractContactsLineItem(sqlReader.GetString(2) + " " + "{ Header = Item Level 0 }");
+                        AddzContractContactsLineItem(sqlReader.GetString(3) + " " + "{ Header = Item Level 1 }");                      
+                        //Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7},\t{8},\t{9},\t{10}", sqlReader.GetString(0), sqlReader.GetGuid(1), sqlReader.GetString(2), sqlReader.GetString(3), sqlReader.GetString(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetDateTime(9), sqlReader.GetDateTime(10));
                     }
                 }
                 else
