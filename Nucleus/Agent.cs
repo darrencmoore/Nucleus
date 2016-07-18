@@ -22,9 +22,7 @@ namespace Nucleus
         private SqlConnection _sqlConn;
         private SqlCommand _sqlCommand;
         private string _connStr;
-        private string _accountName;
-
-        
+                
 
 #region Getter/Setter ZContactContractsSelect
 
@@ -42,11 +40,11 @@ namespace Nucleus
                 {  
                     if (item.Contains("{ Header = Item Level 0 }")) // parent
                     {
-                        _accountName = item.Replace("{ Header = Item Level 0 }", "");
+                        //item.Replace("{ Header = Item Level 0 }", "");
                         _agentResponse.Add(item);
                         continue;
                     }
-                    if(item.Contains("{ Header = Item Level 1 }") || item.Contains("{ Header = Item Level 2 }"))
+                    if(item.Contains("{ Header = Item Level 1 }") || item.Contains("{ Header = Item Level 2 }")) // child
                     {
                         _agentResponse.Add(item);
                     }                   
@@ -114,7 +112,7 @@ namespace Nucleus
                                 
                 _connStr = ConfigurationManager.ConnectionStrings["SYSPRO_SQL_SERVER"].ConnectionString;                                
                 DBOpenConnection();
-                _sqlCommand = new SqlCommand("usp_ProjectHeader_ZccPcmPpcmcCeZcbc", _sqlConn); //usp_ProjectHeader_ZccPcmPpcmcZcbc
+                _sqlCommand = new SqlCommand("usp_ContractHeader_ZccPcmPpcmcCeZcbc", _sqlConn); //usp_ProjectHeader_ZccPcmPpcmcZcbc
                 _sqlCommand.CommandType = CommandType.StoredProcedure;
                 _sqlCommand.Parameters.Add(new SqlParameter("@Contract", ID));
                 sqlReader = _sqlCommand.ExecuteReader();
