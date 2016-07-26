@@ -53,7 +53,7 @@ namespace Nucleus
             }
         }        
         
-        public void AddContractContactsListItem(string item)
+        public void AgentContractContactsListItem(string item)
         {
             Agent_ContractContacts.Add(item);
         }
@@ -119,9 +119,9 @@ namespace Nucleus
                 {
                     while (sqlReader.Read())
                     {
-                        AddContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(2) + " " + "{ Header = Item Level 0 }"); //Account ID + Account Name
-                        AddContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(4) + " " + "{ Header = Item Level 1 }"); //Account ID + Contact Full Name
-                        AddContractContactsListItem(sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }"); //Contact Email Address "{ Header = Item Level 2 }"
+                        AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(2) + " " + "{ Header = Item Level 0 }"); //Account ID + Account Name
+                        AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(4) + " " + "{ Header = Item Level 1 }"); //Account ID + Contact Full Name
+                        AgentContractContactsListItem(sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }"); //Contact Email Address "{ Header = Item Level 2 }"
                         //Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7},\t{8},\t{9},\t{10}", sqlReader.GetString(0), sqlReader.GetGuid(1), sqlReader.GetString(2), sqlReader.GetString(3), sqlReader.GetString(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetDateTime(9), sqlReader.GetDateTime(10));
                     }
                 }
@@ -146,7 +146,7 @@ namespace Nucleus
         /// <param name="contractId"></param>
         /// <param name="accountId"></param>
         /// <returns></returns>
-        public SqlDataReader ReportPreview(String contractId, String accountId)
+        public SqlDataReader ReportPreview(string contractId, string accountId)
         {
             return null;
         }
