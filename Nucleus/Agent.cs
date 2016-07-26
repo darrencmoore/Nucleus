@@ -57,10 +57,9 @@ namespace Nucleus
         {
             Agent_ContractContacts.Add(item);
         }
-#endregion
+        #endregion
 
-        #region Database Connections and SELECT Statement for tree view     
-
+        #region Database Connections and SELECT Statement for tree view
         /// <summary>
         /// Opens Database Connection
         /// </summary>
@@ -99,7 +98,7 @@ namespace Nucleus
         }
 
         /// <summary>
-        /// Takes any select statement passed to it. 
+        /// Runs a stored procedure
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
@@ -141,13 +140,14 @@ namespace Nucleus
 
         #region Select Statement for report preview
         /// <summary>
-        /// 
+        /// Runs a stored procedure
         /// </summary>
         /// <param name="contractId"></param>
         /// <param name="accountId"></param>
         /// <returns></returns>
         public SqlDataReader ReportPreview(string contractId, string accountId)
         {
+            Console.WriteLine("Contract = " + contractId + " " + "Account = " + accountId);
             return null;
         }
 
