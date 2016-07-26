@@ -24,10 +24,10 @@ namespace Nucleus
         private string _connStr;
                 
 
-#region Getter/Setter ZContactContractsSelect
+        #region Getter/Setter ZContactContractsSelect
 
         public List<string> _proLogic_zContractContacts = new List<string>();
-        public List<string> getProLogic_zContractContacts
+        public List<string> getAgent_ContactsResponse
         {
             get
             {
@@ -59,7 +59,7 @@ namespace Nucleus
         }
 #endregion
 
-#region Database Connections and SELECT, INSERT, DELETE      
+        #region Database Connections and SELECT Statement for tree view     
 
         /// <summary>
         /// Opens Database Connection
@@ -103,17 +103,16 @@ namespace Nucleus
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public SqlDataReader Select(string ID)
+        public SqlDataReader GetContacts(string contractId)
         {
             try
             {
-                SqlDataReader sqlReader;
-                                
+                SqlDataReader sqlReader;                                
                 _connStr = ConfigurationManager.ConnectionStrings["SYSPRO_SQL_SERVER"].ConnectionString;                                
                 DBOpenConnection();
                 _sqlCommand = new SqlCommand("usp_ContractHeader_ZccPcmPpcmcCeZcbc", _sqlConn); //usp_ProjectHeader_ZccPcmPpcmcZcbc
                 _sqlCommand.CommandType = CommandType.StoredProcedure;
-                _sqlCommand.Parameters.Add(new SqlParameter("@Contract", ID));
+                _sqlCommand.Parameters.Add(new SqlParameter("@Contract", contractId));
                 sqlReader = _sqlCommand.ExecuteReader();
                                
                 if (sqlReader.HasRows)
@@ -138,6 +137,20 @@ namespace Nucleus
                 return null;
             }
         }
-#endregion
+        #endregion
+
+        #region Select Statement for report
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
+        public SqlDataReader ReportPreview(String contractId, String accountId)
+        {
+            return null;
+        }
+
+        #endregion
     }
 }
