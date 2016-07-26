@@ -26,14 +26,14 @@ namespace Nucleus
 
         #region Getter/Setter ZContactContractsSelect
 
-        public List<string> _proLogic_zContractContacts = new List<string>();
-        public List<string> getAgent_ContactsResponse
+        public List<string> Agent_ContractContacts = new List<string>();
+        public List<string> Agent_ContractContactsResponse
         {
             get
             {
                 // hash set eliminiates duplicate Account names for 
                 //the _proLogic_zContractContacts list based on contract
-                var ContactHash = new HashSet<string>(_proLogic_zContractContacts);
+                var ContactHash = new HashSet<string>(Agent_ContractContacts);
                 //THis is being sent the Bidding Report Application after post sorting the hash set
                 List<string> _agentResponse = new List<string>();                
                 foreach (string item in ContactHash)
@@ -53,9 +53,9 @@ namespace Nucleus
             }
         }        
         
-        public void AddzContractContactsLineItem(string item)
+        public void AddContractContactsListItem(string item)
         {
-            _proLogic_zContractContacts.Add(item);
+            Agent_ContractContacts.Add(item);
         }
 #endregion
 
@@ -119,9 +119,9 @@ namespace Nucleus
                 {
                     while (sqlReader.Read())
                     {
-                        AddzContractContactsLineItem(sqlReader.GetString(1) + " " + sqlReader.GetString(2) + " " + "{ Header = Item Level 0 }"); //Account ID + Account Name
-                        AddzContractContactsLineItem(sqlReader.GetString(1) + " " + sqlReader.GetString(4) + " " + "{ Header = Item Level 1 }"); //Account ID + Contact Full Name
-                        AddzContractContactsLineItem(sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }"); //Contact Email Address "{ Header = Item Level 2 }"
+                        AddContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(2) + " " + "{ Header = Item Level 0 }"); //Account ID + Account Name
+                        AddContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(4) + " " + "{ Header = Item Level 1 }"); //Account ID + Contact Full Name
+                        AddContractContactsListItem(sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }"); //Contact Email Address "{ Header = Item Level 2 }"
                         //Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7},\t{8},\t{9},\t{10}", sqlReader.GetString(0), sqlReader.GetGuid(1), sqlReader.GetString(2), sqlReader.GetString(3), sqlReader.GetString(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetDateTime(9), sqlReader.GetDateTime(10));
                     }
                 }
@@ -139,7 +139,7 @@ namespace Nucleus
         }
         #endregion
 
-        #region Select Statement for report
+        #region Select Statement for report preview
         /// <summary>
         /// 
         /// </summary>
