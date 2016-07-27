@@ -1,0 +1,5 @@
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\Nucleus.dll.config
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\Nucleus.dll
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\Nucleus.pdb
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Release\Nucleus.dll
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Release\Nucleus.pdb

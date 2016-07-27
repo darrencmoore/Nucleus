@@ -4,3 +4,8 @@ C:\Users\darrenm\Documents\Visual Studio 2015\Projects\Nucleus\Nucleus\bin\Debug
 C:\Users\darrenm\Documents\Visual Studio 2015\Projects\Nucleus\Nucleus\obj\Debug\Nucleus.csprojResolveAssemblyReference.cache
 C:\Users\darrenm\Documents\Visual Studio 2015\Projects\Nucleus\Nucleus\obj\Debug\Nucleus.dll
 C:\Users\darrenm\Documents\Visual Studio 2015\Projects\Nucleus\Nucleus\obj\Debug\Nucleus.pdb
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\Nucleus.dll.config
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\Nucleus.dll
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\Nucleus.pdb
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Debug\Nucleus.dll
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Debug\Nucleus.pdb
