@@ -146,9 +146,29 @@ namespace Nucleus
         /// <param name="contractId"></param>
         /// <param name="accountId"></param>
         /// <returns></returns>
-        public SqlDataReader ReportPreview(string contractId, string accountId)
+        public DataTable ReportPreview(string contractId, string accountId)
         {
-            Console.WriteLine("Contract = " + contractId + " " + "Account = " + accountId);
+            try
+            {
+                DataTable reportPreview = new DataTable();
+                _connStr = ConfigurationManager.ConnectionStrings["SYSPRO_SQL_SERVER"].ConnectionString;
+                DBOpenConnection();
+                _sqlCommand = new SqlCommand("usp_ContractDetail_pContract_Account", _sqlConn);
+                _sqlCommand.Parameters.Add(new SqlParameter("@Contract", contractId));
+                _sqlCommand.Parameters.Add(new SqlParameter("@Account", accountId));
+                _sqlCommand.CommandType = CommandType.StoredProcedure;
+                using (SqlDataAdapter adapReportPreview = new SqlDataAdapter(_sqlCommand))
+                {
+                    adapReportPreview.Fill(reportPreview);
+                }
+                return reportPreview;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            
+
             return null;
         }
 
