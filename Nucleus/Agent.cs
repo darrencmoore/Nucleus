@@ -98,10 +98,10 @@ namespace Nucleus
         }
 
         /// <summary>
-        /// Runs a stored procedure
+        /// Runs the usp_ContractHeader_pContact stored procedure 
         /// </summary>
         /// <param name="sql"></param>
-        /// <returns></returns>
+        /// <returns> Returns a list for the treeview </returns>
         public SqlDataReader GetContacts(string contractId)
         {
             try
@@ -141,11 +141,11 @@ namespace Nucleus
 
         #region Select Statement for report preview
         /// <summary>
-        /// Runs a stored procedure
+        /// Runs the usp_ContractDetail_pContract_Account stored procedure 
         /// </summary>
         /// <param name="contractId"></param>
         /// <param name="accountId"></param>
-        /// <returns></returns>
+        /// <returns>Returns a datatable for the Crystal Report report source</returns>
         public DataTable ReportPreview(string contractId, string accountId)
         {
             try
@@ -167,11 +167,8 @@ namespace Nucleus
             {
                 Console.WriteLine(e.ToString());
             }
-            
-
             return null;
         }
-
         #endregion
     }
 }
