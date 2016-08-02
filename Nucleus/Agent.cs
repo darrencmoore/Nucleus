@@ -8,6 +8,8 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Diagnostics;
 using System.Windows;
+using System.Runtime.Caching;
+
 
 
 /// <summary>
@@ -169,6 +171,32 @@ namespace Nucleus
             }
             return null;
         }
+        #endregion
+
+        #region
+        public bool ReportPreviewCache(string reportPreviewCache, string contractId, string accountId)
+        {
+            try
+            {
+                if (reportPreviewCache != null)
+                {
+                    CacheItemPolicy reportPreviewCachePolicy = new CacheItemPolicy();
+                    reportPreviewCachePolicy.AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(60.0);
+                    List<string> reportPreviewCacheFilePaths = new List<string>();
+                    string payload = reportPreviewCache + contractId + accountId;
+                    reportPreviewCacheFilePaths.Add("c:\\AgentReportCache\\" + payload);
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
+
+            
+            return true;
+        }
+
+
         #endregion
     }
 }
