@@ -111,7 +111,7 @@ namespace Nucleus
                 SqlDataReader sqlReader;                                
                 _connStr = ConfigurationManager.ConnectionStrings["SYSPRO_SQL_SERVER"].ConnectionString;                                
                 DBOpenConnection();
-                _sqlCommand = new SqlCommand("usp_ContractHeader_pContact", _sqlConn);
+                _sqlCommand = new SqlCommand("usp_ContractHeader_pContract", _sqlConn);
                 _sqlCommand.CommandType = CommandType.StoredProcedure;
                 _sqlCommand.Parameters.Add(new SqlParameter("@Contract", contractId));
                 sqlReader = _sqlCommand.ExecuteReader();
