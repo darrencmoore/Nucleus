@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,11 +35,14 @@ namespace Nucleus
             get
             {
                 // hash set eliminiates duplicate Account names for 
-                //the _proLogic_zContractContacts list based on contract
-                var ContactHash = new HashSet<string>(Agent_ContractContacts);
+                //the _proLogic_zContractContacts list based on contract                
+                List<string> ContactList =  new List<string>(Agent_ContractContacts);
+                
+                //ContactList.Sort();
+                //var ContactHash = new HashSet<string>(Agent_ContractContacts);
                 //THis is being sent the Bidding Report Application after post sorting the hash set
                 List<string> _agentResponse = new List<string>();                
-                foreach (string item in ContactHash)
+                foreach (string item in ContactList)
                 {                  
                     if (item.Contains("{ Header = Item Level 0 }")) // parent
                     {
@@ -49,8 +53,8 @@ namespace Nucleus
                     {
                         _agentResponse.Add(item);
                     }                   
-                }               
-
+                }
+                
                 return _agentResponse;
             }
         }        
@@ -122,7 +126,7 @@ namespace Nucleus
                     {
                         AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(2) + " " + "{ Header = Item Level 0 }"); //Account ID + Account Name
                         AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(4) + " " + "{ Header = Item Level 1 }"); //Account ID + Contact Full Name
-                        AgentContractContactsListItem(sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }"); //Contact Email Address "{ Header = Item Level 2 }"
+                        AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }"); //Contact Email Address "{ Header = Item Level 2 }"
                         // This is for debugging, if any fields get added 
                         //Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7},\t{8},\t{9},\t{10}", sqlReader.GetString(0), sqlReader.GetGuid(1), sqlReader.GetString(2), sqlReader.GetString(3), sqlReader.GetString(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetDateTime(9), sqlReader.GetDateTime(10));
                     }
