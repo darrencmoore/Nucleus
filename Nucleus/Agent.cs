@@ -33,19 +33,14 @@ namespace Nucleus
         public List<string> Agent_ContractContactsResponse
         {
             get
-            {
-                // hash set eliminiates duplicate Account names for 
-                //the _proLogic_zContractContacts list based on contract                
+            {               
                 List<string> ContactList =  new List<string>(Agent_ContractContacts);
-                
-                //ContactList.Sort();
-                //var ContactHash = new HashSet<string>(Agent_ContractContacts);
-                //THis is being sent the Bidding Report Application after post sorting the hash set
+                //This is being sent the Bidding Report Application after post sorting the hash set
                 List<string> _agentResponse = new List<string>();                
                 foreach (string item in ContactList)
-                {                  
+                {                    
                     if (item.Contains("{ Header = Item Level 0 }")) // parent
-                    {
+                    {                       
                         _agentResponse.Add(item);
                         continue;
                     }
@@ -54,14 +49,22 @@ namespace Nucleus
                         _agentResponse.Add(item);
                     }                   
                 }
-                
+
                 return _agentResponse;
             }
         }        
         
+        /// <summary>
+        /// Builds the Agent list to be sent to MainWindow.cs
+        /// Checks to make sure that only one Account Name gets added with the LINQ statement
+        /// </summary>
+        /// <param name="item"></param>
         public void AgentContractContactsListItem(string item)
         {
-            Agent_ContractContacts.Add(item);
+            if(!Agent_ContractContacts.Any(s => s.Equals(item)))
+            {
+                Agent_ContractContacts.Add(item);
+            }            
         }
         #endregion
 
