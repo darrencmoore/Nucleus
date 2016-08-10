@@ -1,17 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Collections;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
-using System.Diagnostics;
-using System.Windows;
-using System.Runtime.Caching;
-using CrystalDecisions.CrystalReports.Engine;
 
 /// <summary>
 /// Created On: 6/22/2016
@@ -178,6 +170,16 @@ namespace Nucleus
             }
             return null;
         }
-        #endregion        
+        #endregion
+
+        #region
+        public void PostXmlForSyspro()
+        {
+            Encore.Utilities dll = new Encore.Utilities();
+            dll.Logon("ADMIN", " ", "TEST [TEST FOR 360 SHEET METAL LLC]", " ", Encore.Language.ENGLISH, 0, 0, " ");
+        }
+
+
+        #endregion
     }
 }
