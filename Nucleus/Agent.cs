@@ -27,7 +27,7 @@ namespace Nucleus
             get
             {               
                 List<string> ContactList =  new List<string>(Agent_ContractContacts);
-                //This is being sent the Bidding Report Application after post sorting the hash set
+                //This is being sent the Bidding Report Application after post sorting
                 List<string> _agentResponse = new List<string>();                
                 foreach (string item in ContactList)
                 {                    
