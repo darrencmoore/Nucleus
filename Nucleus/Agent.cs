@@ -53,10 +53,18 @@ namespace Nucleus
         /// <param name="item"></param>
         public void AgentContractContactsListItem(string item)
         {
-            if(!Agent_ContractContacts.Any(s => s.Equals(item)))
+            if(item.Contains("{ Header = Item Level 0 }") && !Agent_ContractContacts.Contains(item))
             {
                 Agent_ContractContacts.Add(item);
-            }            
+            }
+            if(item.Contains("{ Header = Item Level 1 }"))
+            {
+                Agent_ContractContacts.Add(item);
+            }
+            if (item.Contains("{ Header = Item Level 2 }"))
+            {
+                Agent_ContractContacts.Add(item);
+            }                     
         }
         #endregion
 
