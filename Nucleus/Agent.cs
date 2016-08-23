@@ -189,6 +189,7 @@ namespace Nucleus
         /// The Guids are required to Post an Activity to Syspro
         /// The second is a list of sent bid Proposals (SentProposals)  that correspond to the entries in (StartActvities)
         /// I then build a xml string to post a activity to syspro.
+        /// I also convert the report into binary for posting
         /// </summary>
         /// <param name="StartActvities"></param>
         /// <param name="SentProposals"></param>
