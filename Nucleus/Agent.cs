@@ -203,6 +203,7 @@ namespace Nucleus
             DateTime bidSentDate = DateTime.Now;
             string formatTime = "yyyy-MM-dd";
             int location = 0;
+            byte[] propsalBinaryRep;
 
             try
             {
@@ -242,7 +243,7 @@ namespace Nucleus
                     {
                         activityXML.Append("<AttachmentName>" + SentProposals[location].Name + "</AttachmentName>");
                         activityXML.Append("<AttachmentExt>pdf</AttachmentExt>");
-                        byte[] propsalBinaryRep = new byte[SentProposals[location].ContentStream.Length];
+                        propsalBinaryRep = new byte[SentProposals[location].ContentStream.Length];
                         string xmlPropsalBinaryRepData;
                         SentProposals[location].ContentStream.Read(propsalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
                         SentProposals[location].ContentStream.Close();
