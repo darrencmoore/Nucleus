@@ -265,65 +265,8 @@ namespace Nucleus
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
-            }
-            
-            //StringBuilder Document = new StringBuilder();
-
-            //Building Document content
-            //Document.Append("<?xml version=\"1.0\" encoding=\"Windows-1252\"?>");
-            //Document.Append("<!-- Copyright 1994-2014 SYSPRO Ltd.-->");
-            //Document.Append("<!--");
-            //Document.Append("Sample XML for the Contact Activity Post Business Object");
-            //Document.Append("-->");
-            //Document.Append("<PostActivity xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation=\"CMSTATDOC.XSD\">");
-            //Document.Append("<Item>");
-            //Document.Append("<ContactId>{36303032-3031-3931-3135-313030373932}</ContactId>");
-            //Document.Append("<Activity>");
-            //Document.Append("<ActivityType>12</ActivityType>");
-            //Document.Append("<Private>N</Private>");
-            //Document.Append("<StartDate>2008-01-01</StartDate>");
-            //Document.Append("<StartTime>07:00:00</StartTime>");
-            //Document.Append("<EndDate>2008-01-01</EndDate>");
-            //Document.Append("<EndTime>21:00:00</EndTime>");
-            //Document.Append("<Subject>Update 00001</Subject>");
-            //Document.Append("<Location>Head office</Location>");
-            //Document.Append("<Regarding>Sales call</Regarding>");
-            //Document.Append("<Result>Fax sent</Result>");
-            //Document.Append("<UserField1>User Field 1</UserField1>");
-            //Document.Append("<UserField2>User Field 2</UserField2>");
-            //Document.Append("<UserField3>User Field 3</UserField3>");
-            //Document.Append("<Priority>9</Priority>");
-            //Document.Append("<FollowUpFlag>1</FollowUpFlag>");
-            //Document.Append("<FollowUpReqd>Y</FollowUpReqd>");
-            //Document.Append("<FollowUpDate>2008-01-03</FollowUpDate>");
-            //Document.Append("<FollowUpTime>08:30:00</FollowUpTime>");
-            //Document.Append("<AllDayEvent>N</AllDayEvent>");
-            //Document.Append("<ShowTimeAs>B</ShowTimeAs>");
-            //Document.Append("<TaskDueDate>2008-02-01</TaskDueDate>");
-            //Document.Append("<TaskPctComplete>50</TaskPctComplete>");
-            //Document.Append("<TaskStatus>4</TaskStatus>");
-            //Document.Append("<Attendees>");
-            //Document.Append("<Contact>james.paddington@bayside.com</Contact>");
-            //Document.Append("<Contact>louise.granger@bayside.com</Contact>");
-            //Document.Append("</Attendees>");
-            //Document.Append("<Source>SOI</Source>");
-            //Document.Append("<Body><![CDATA[{\rtf1\ansi\ansicpg1252\deff0\deflang1033{\fonttbl{\f0\fswiss\fcharset0 Arial;}}{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\f0\fs20 Sales Fax Information\par}]]></Body>");
-            //Document.Append("<Attachments>");
-            //Document.Append("<Attachment>");
-            //Document.Append("<AttachmentName>Specification.doc</AttachmentName>");
-            //Document.Append("<AttachmentExt>doc</AttachmentExt>");
-            //Document.Append("<AttachmentData><![CDATA[Binary content1]]></AttachmentData>");
-            //Document.Append("</Attachment>");
-            //Document.Append("</Attachments>");
-            //Document.Append("<eSignature/>");
-            //Document.Append("</Activity>");
-            //Document.Append("</Item>");
-            //Document.Append("</PostActivity>");
-
-
+            }            
         }
-
-
         #endregion
     }
 }
