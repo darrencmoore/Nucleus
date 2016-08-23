@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Text;
+using System.Net.Mail;
 
 /// <summary>
 /// Created On: 6/22/2016
@@ -182,13 +183,76 @@ namespace Nucleus
         #endregion
 
         #region Post XML for Syspro
-        public void PostXmlForSyspro(List<string> StartActvities)
+        /// <summary>
+        /// Takes two lists.  
+        /// One is the list of ContactId which are Guids (StartActvities). 
+        /// The Guids are required to Post an Activity to Syspro
+        /// The second is a list of sent bid Proposals (SentProposals)  that correspond to the entries in (StartActvities)
+        /// I then build a xml string to post a activity to syspro.
+        /// </summary>
+        /// <param name="StartActvities"></param>
+        /// <param name="SentProposals"></param>
+        public void PostXmlForSyspro(List<Guid> StartActvities, List<Attachment> SentProposals)
         {
             // not needed for reporting. 
             // but needed for scanning
             //Encore.Utilities dll = new Encore.Utilities();
             //dll.Logon("ADMIN", " ", "TEST [TEST FOR 360 SHEET METAL LLC]", " ", Encore.Language.ENGLISH, 0, 0, " ");
             //Declaration
+            DateTime bidSentDate = DateTime.Now;
+            string formatTime = "yyyy-MM-dd";
+            int location = 0;
+
+            foreach (Guid activity in StartActvities)
+            {                
+                StringBuilder activityXML = new StringBuilder();
+                activityXML.Append("<PostActivity xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation=\"CMSTATDOC.XSD\">");
+                activityXML.Append("<Item>");
+                activityXML.Append("<ContactId>{" + activity + "}</ContactId>");
+                activityXML.Append("<Activity>");
+                activityXML.Append("<ActivityType>12</ActivityType>");
+                activityXML.Append("<Private>N</Private>");
+                activityXML.Append("<StartDate>" + bidSentDate.ToString(formatTime) + "</StartDate>");
+                activityXML.Append("<StartTime>07:00:00</StartTime>");
+                activityXML.Append("<EndDate>" + bidSentDate.ToString(formatTime) + "</EndDate>"); 
+                activityXML.Append("<EndTime>21:00:00</EndTime>");
+                activityXML.Append("<Subject>Bid Proposal</Subject>");
+                //activityXML.Append("<Location>Head office</Location>");
+                //activityXML.Append("<Regarding>Sales call</Regarding>");
+                activityXML.Append("<Result>Email sent</Result>");
+                activityXML.Append("<UserField1>User Field 1</UserField1>");
+                activityXML.Append("<UserField2>User Field 2</UserField2>");
+                activityXML.Append("<UserField3>User Field 3</UserField3>");
+                //activityXML.Append("<Priority>9</Priority>");
+                //activityXML.Append("<FollowUpFlag>1</FollowUpFlag>");
+                //activityXML.Append("<FollowUpReqd>Y</FollowUpReqd>");
+                //activityXML.Append("<FollowUpDate>2008-01-03</FollowUpDate>");
+                //activityXML.Append("<FollowUpTime>08:30:00</FollowUpTime>");
+                //activityXML.Append("<AllDayEvent>N</AllDayEvent>");
+                //activityXML.Append("<ShowTimeAs>B</ShowTimeAs>");
+                //activityXML.Append("<TaskDueDate>2008-02-01</TaskDueDate>");
+                //activityXML.Append("<TaskPctComplete>50</TaskPctComplete>");
+                //activityXML.Append("<TaskStatus>4</TaskStatus>");
+                activityXML.Append("<Attachments>");
+                activityXML.Append("<Attachment>");
+                foreach (Attachment attachment in SentProposals)
+                {                    
+                    activityXML.Append("<AttachmentName>" + SentProposals[location].Name + "</AttachmentName>");
+                    activityXML.Append("<AttachmentExt>pdf</AttachmentExt>");
+                    activityXML.Append("<AttachmentData><![CDATA[Binary content1]]></AttachmentData>");
+                    location++;
+                    break;
+                }
+                //activityXML.Append("<AttachmentName>Specification.doc</AttachmentName>");
+                //activityXML.Append("<AttachmentExt>pdf</AttachmentExt>");
+                //activityXML.Append("<AttachmentData><![CDATA[Binary content1]]></AttachmentData>");
+                activityXML.Append("</Attachment>");
+                activityXML.Append("</Attachments>");
+                activityXML.Append("<eSignature/>");
+                activityXML.Append("</Activity>");
+                activityXML.Append("</Item>");
+                activityXML.Append("</PostActivity>");
+            }
             //StringBuilder Document = new StringBuilder();
 
             //Building Document content
