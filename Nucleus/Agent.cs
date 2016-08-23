@@ -203,56 +203,69 @@ namespace Nucleus
             string formatTime = "yyyy-MM-dd";
             int location = 0;
 
-            foreach (Guid activity in StartActvities)
-            {                
-                StringBuilder activityXML = new StringBuilder();
-                activityXML.Append("<PostActivity xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation=\"CMSTATDOC.XSD\">");
-                activityXML.Append("<Item>");
-                activityXML.Append("<ContactId>{" + activity + "}</ContactId>");
-                activityXML.Append("<Activity>");
-                activityXML.Append("<ActivityType>12</ActivityType>");
-                activityXML.Append("<Private>N</Private>");
-                activityXML.Append("<StartDate>" + bidSentDate.ToString(formatTime) + "</StartDate>");
-                activityXML.Append("<StartTime>07:00:00</StartTime>");
-                activityXML.Append("<EndDate>" + bidSentDate.ToString(formatTime) + "</EndDate>"); 
-                activityXML.Append("<EndTime>21:00:00</EndTime>");
-                activityXML.Append("<Subject>Bid Proposal</Subject>");
-                //activityXML.Append("<Location>Head office</Location>");
-                //activityXML.Append("<Regarding>Sales call</Regarding>");
-                activityXML.Append("<Result>Email sent</Result>");
-                activityXML.Append("<UserField1>User Field 1</UserField1>");
-                activityXML.Append("<UserField2>User Field 2</UserField2>");
-                activityXML.Append("<UserField3>User Field 3</UserField3>");
-                //activityXML.Append("<Priority>9</Priority>");
-                //activityXML.Append("<FollowUpFlag>1</FollowUpFlag>");
-                //activityXML.Append("<FollowUpReqd>Y</FollowUpReqd>");
-                //activityXML.Append("<FollowUpDate>2008-01-03</FollowUpDate>");
-                //activityXML.Append("<FollowUpTime>08:30:00</FollowUpTime>");
-                //activityXML.Append("<AllDayEvent>N</AllDayEvent>");
-                //activityXML.Append("<ShowTimeAs>B</ShowTimeAs>");
-                //activityXML.Append("<TaskDueDate>2008-02-01</TaskDueDate>");
-                //activityXML.Append("<TaskPctComplete>50</TaskPctComplete>");
-                //activityXML.Append("<TaskStatus>4</TaskStatus>");
-                activityXML.Append("<Attachments>");
-                activityXML.Append("<Attachment>");
-                foreach (Attachment attachment in SentProposals)
-                {                    
-                    activityXML.Append("<AttachmentName>" + SentProposals[location].Name + "</AttachmentName>");
-                    activityXML.Append("<AttachmentExt>pdf</AttachmentExt>");
-                    activityXML.Append("<AttachmentData><![CDATA[Binary content1]]></AttachmentData>");
-                    location++;
-                    break;
+            try
+            {
+                foreach (Guid activity in StartActvities)
+                {
+                    StringBuilder activityXML = new StringBuilder();
+                    activityXML.Append("<PostActivity xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation=\"CMSTATDOC.XSD\">");
+                    activityXML.Append("<Item>");
+                    activityXML.Append("<ContactId>{" + activity + "}</ContactId>");
+                    activityXML.Append("<Activity>");
+                    activityXML.Append("<ActivityType>12</ActivityType>");
+                    activityXML.Append("<Private>N</Private>");
+                    activityXML.Append("<StartDate>" + bidSentDate.ToString(formatTime) + "</StartDate>");
+                    activityXML.Append("<StartTime>07:00:00</StartTime>");
+                    activityXML.Append("<EndDate>" + bidSentDate.ToString(formatTime) + "</EndDate>");
+                    activityXML.Append("<EndTime>21:00:00</EndTime>");
+                    activityXML.Append("<Subject>Bid Proposal</Subject>");
+                    //activityXML.Append("<Location>Head office</Location>");
+                    //activityXML.Append("<Regarding>Sales call</Regarding>");
+                    activityXML.Append("<Result>Email sent</Result>");
+                    activityXML.Append("<UserField1>User Field 1</UserField1>");
+                    activityXML.Append("<UserField2>User Field 2</UserField2>");
+                    activityXML.Append("<UserField3>User Field 3</UserField3>");
+                    //activityXML.Append("<Priority>9</Priority>");
+                    //activityXML.Append("<FollowUpFlag>1</FollowUpFlag>");
+                    //activityXML.Append("<FollowUpReqd>Y</FollowUpReqd>");
+                    //activityXML.Append("<FollowUpDate>2008-01-03</FollowUpDate>");
+                    //activityXML.Append("<FollowUpTime>08:30:00</FollowUpTime>");
+                    //activityXML.Append("<AllDayEvent>N</AllDayEvent>");
+                    //activityXML.Append("<ShowTimeAs>B</ShowTimeAs>");
+                    //activityXML.Append("<TaskDueDate>2008-02-01</TaskDueDate>");
+                    //activityXML.Append("<TaskPctComplete>50</TaskPctComplete>");
+                    //activityXML.Append("<TaskStatus>4</TaskStatus>");
+                    activityXML.Append("<Attachments>");
+                    activityXML.Append("<Attachment>");
+                    foreach (Attachment attachment in SentProposals)
+                    {
+                        activityXML.Append("<AttachmentName>" + SentProposals[location].Name + "</AttachmentName>");
+                        activityXML.Append("<AttachmentExt>pdf</AttachmentExt>");
+                        byte[] propsalBinaryRep = new byte[SentProposals[location].ContentStream.Length];
+                        string xmlPropsalBinaryRepData;
+                        SentProposals[location].ContentStream.Read(propsalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
+                        SentProposals[location].ContentStream.Close();
+                        xmlPropsalBinaryRepData = System.Convert.ToBase64String(propsalBinaryRep, 0, propsalBinaryRep.Length);
+                        activityXML.Append("<AttachmentData>" + xmlPropsalBinaryRepData + "</AttachmentData>");
+                        location++;
+                        break;
+                    }
+                    //activityXML.Append("<AttachmentName>Specification.doc</AttachmentName>");
+                    //activityXML.Append("<AttachmentExt>pdf</AttachmentExt>");
+                    //activityXML.Append("<AttachmentData><![CDATA[Binary content1]]></AttachmentData>");
+                    activityXML.Append("</Attachment>");
+                    activityXML.Append("</Attachments>");
+                    activityXML.Append("<eSignature/>");
+                    activityXML.Append("</Activity>");
+                    activityXML.Append("</Item>");
+                    activityXML.Append("</PostActivity>");
                 }
-                //activityXML.Append("<AttachmentName>Specification.doc</AttachmentName>");
-                //activityXML.Append("<AttachmentExt>pdf</AttachmentExt>");
-                //activityXML.Append("<AttachmentData><![CDATA[Binary content1]]></AttachmentData>");
-                activityXML.Append("</Attachment>");
-                activityXML.Append("</Attachments>");
-                activityXML.Append("<eSignature/>");
-                activityXML.Append("</Activity>");
-                activityXML.Append("</Item>");
-                activityXML.Append("</PostActivity>");
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+            
             //StringBuilder Document = new StringBuilder();
 
             //Building Document content
