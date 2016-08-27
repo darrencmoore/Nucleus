@@ -201,7 +201,9 @@ namespace Nucleus
             //dll.Logon("ADMIN", " ", "TEST [TEST FOR 360 SHEET METAL LLC]", " ", Encore.Language.ENGLISH, 0, 0, " ");
             //Declaration
             DateTime bidSentDate = DateTime.Now;
-            string formatTime = "yyyy-MM-dd";
+            string formatDate = "yyyy-MM-dd";
+            DateTime bidSentTime = DateTime.Now;
+            string formatTime = "hh:mm:ss";
             int location = 0;
             byte[] propsalBinaryRep;
 
@@ -216,10 +218,10 @@ namespace Nucleus
                     activityXML.Append("<Activity>");
                     activityXML.Append("<ActivityType>12</ActivityType>");
                     activityXML.Append("<Private>N</Private>");
-                    activityXML.Append("<StartDate>" + bidSentDate.ToString(formatTime) + "</StartDate>");
-                    activityXML.Append("<StartTime>07:00:00</StartTime>");
-                    activityXML.Append("<EndDate>" + bidSentDate.ToString(formatTime) + "</EndDate>");
-                    activityXML.Append("<EndTime>21:00:00</EndTime>");
+                    activityXML.Append("<StartDate>" + bidSentDate.ToString(formatDate) + "</StartDate>");
+                    activityXML.Append("<StartTime>" + bidSentTime.ToString(formatTime) + "</StartTime>");
+                    activityXML.Append("<EndDate>" + bidSentDate.ToString(formatDate) + "</EndDate>");
+                    activityXML.Append("<EndTime>" + bidSentTime.ToString(formatTime) + "</EndTime>");
                     activityXML.Append("<Subject>Bid Proposal</Subject>");
                     //activityXML.Append("<Location>Head office</Location>");
                     //activityXML.Append("<Regarding>Sales call</Regarding>");
@@ -252,9 +254,6 @@ namespace Nucleus
                         location++;
                         break;
                     }
-                    //activityXML.Append("<AttachmentName>Specification.doc</AttachmentName>");
-                    //activityXML.Append("<AttachmentExt>pdf</AttachmentExt>");
-                    //activityXML.Append("<AttachmentData><![CDATA[Binary content1]]></AttachmentData>");
                     activityXML.Append("</Attachment>");
                     activityXML.Append("</Attachments>");
                     activityXML.Append("<eSignature/>");
