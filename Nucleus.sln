@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus", "Nucleus\Nucleus.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProLogicReportingApplication", "..\ProLogicReportingApplication\ProLogicReportingApplication\ProLogicReportingApplication.csproj", "{7BA59907-F239-41B5-A798-62E35E4AEA52}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ProLogicBid", "ProLogicBid\ProLogicBid.vbproj", "{C5DD7EE1-B5AB-4210-8B88-E5CEBA00D4CE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,14 +31,6 @@ Global
 		{7BA59907-F239-41B5-A798-62E35E4AEA52}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BA59907-F239-41B5-A798-62E35E4AEA52}.Release|x64.ActiveCfg = Release|x64
 		{7BA59907-F239-41B5-A798-62E35E4AEA52}.Release|x64.Build.0 = Release|x64
-		{C5DD7EE1-B5AB-4210-8B88-E5CEBA00D4CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5DD7EE1-B5AB-4210-8B88-E5CEBA00D4CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5DD7EE1-B5AB-4210-8B88-E5CEBA00D4CE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{C5DD7EE1-B5AB-4210-8B88-E5CEBA00D4CE}.Debug|x64.Build.0 = Debug|Any CPU
-		{C5DD7EE1-B5AB-4210-8B88-E5CEBA00D4CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5DD7EE1-B5AB-4210-8B88-E5CEBA00D4CE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5DD7EE1-B5AB-4210-8B88-E5CEBA00D4CE}.Release|x64.ActiveCfg = Release|Any CPU
-		{C5DD7EE1-B5AB-4210-8B88-E5CEBA00D4CE}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

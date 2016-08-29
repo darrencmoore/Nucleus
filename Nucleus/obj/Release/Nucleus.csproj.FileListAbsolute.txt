@@ -2,6 +2,7 @@ C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\Nucleus.dll.config
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\Nucleus.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\Nucleus.pdb
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\CrystalDecisions.CrystalReports.Engine.dll
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\ProLogicBid.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\CrystalDecisions.Shared.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\CrystalDecisions.ReportAppServer.DataDefModel.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\CrystalDecisions.ReportAppServer.ClientDoc.dll
@@ -17,6 +18,7 @@ C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\CrystalDecisions.ReportAppS
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\log4net.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\CrystalDecisions.ReportAppServer.CommonControls.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Release\stdole.dll
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Release\Nucleus.csprojResolveAssemblyReference.cache
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Release\Interop.Encore.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Release\Nucleus.csproj.ResolveComReference.cache
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Release\Nucleus.dll

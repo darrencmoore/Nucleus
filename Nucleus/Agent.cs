@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Text;
 using System.Net.Mail;
-using ProLogicBid;
+
 
 /// <summary>
 /// Created On: 6/22/2016
@@ -213,23 +213,26 @@ namespace Nucleus
                 foreach (Guid activity in StartActvities)
                 {
                     StringBuilder activityXML = new StringBuilder();
-                    activityXML.Append("<PostActivity xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation=\"CMSTATDOC.XSD\">");
-                    activityXML.Append("<Item>");
-                    activityXML.Append("<ContactId>{" + activity + "}</ContactId>");
-                    activityXML.Append("<Activity>");
-                    activityXML.Append("<ActivityType>12</ActivityType>");
-                    activityXML.Append("<Private>N</Private>");
-                    activityXML.Append("<StartDate>" + bidSentDate.ToString(formatDate) + "</StartDate>");
-                    activityXML.Append("<StartTime>" + bidSentTime.ToString(formatTime) + "</StartTime>");
-                    activityXML.Append("<EndDate>" + bidSentDate.ToString(formatDate) + "</EndDate>");
-                    activityXML.Append("<EndTime>" + bidSentTime.ToString(formatTime) + "</EndTime>");
-                    activityXML.Append("<Subject>Bid Proposal</Subject>");
+                    activityXML.Append("Function RunMe(1,2)" + "& vbCrLf" +
+                    activityXML.Append("Dim x As String" + "& vbCrLf" +
+
+                    activityXML.Append("x = <PostActivity xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation=\"CMSTATDOC.XSD\">" + "& vbCrLf" +
+                    activityXML.Append("x = x & <Item>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <ContactId>{" + activity + "}</ContactId>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <Activity>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <ActivityType>12</ActivityType>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <Private>N</Private>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <StartDate>" + bidSentDate.ToString(formatDate) + "</StartDate>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <StartTime>" + bidSentTime.ToString(formatTime) + "</StartTime>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <EndDate>" + bidSentDate.ToString(formatDate) + "</EndDate>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <EndTime>" + bidSentTime.ToString(formatTime) + "</EndTime>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <Subject>Bid Proposal</Subject>" + "& vbCrLf" +
                     //activityXML.Append("<Location>Head office</Location>");
                     //activityXML.Append("<Regarding>Sales call</Regarding>");
-                    activityXML.Append("<Result>Email sent</Result>");
-                    activityXML.Append("<UserField1>User Field 1</UserField1>");
-                    activityXML.Append("<UserField2>User Field 2</UserField2>");
-                    activityXML.Append("<UserField3>User Field 3</UserField3>");
+                    activityXML.Append("x = x & <Result>Email sent</Result>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <UserField1>User Field 1</UserField1>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <UserField2>User Field 2</UserField2>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <UserField3>User Field 3</UserField3>" + "& vbCrLf" +
                     //activityXML.Append("<Priority>9</Priority>");
                     //activityXML.Append("<FollowUpFlag>1</FollowUpFlag>");
                     //activityXML.Append("<FollowUpReqd>Y</FollowUpReqd>");
@@ -240,31 +243,34 @@ namespace Nucleus
                     //activityXML.Append("<TaskDueDate>2008-02-01</TaskDueDate>");
                     //activityXML.Append("<TaskPctComplete>50</TaskPctComplete>");
                     //activityXML.Append("<TaskStatus>4</TaskStatus>");
-                    activityXML.Append("<Attachments>");
-                    activityXML.Append("<Attachment>");
-                    foreach (Attachment attachment in SentProposals)
-                    {
-                        activityXML.Append("<AttachmentName>" + SentProposals[location].Name + "</AttachmentName>");
-                        activityXML.Append("<AttachmentExt>pdf</AttachmentExt>");
-                        propsalBinaryRep = new byte[SentProposals[location].ContentStream.Length];
-                        string xmlPropsalBinaryRepData;
-                        SentProposals[location].ContentStream.Read(propsalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
-                        SentProposals[location].ContentStream.Close();
-                        xmlPropsalBinaryRepData = System.Convert.ToBase64String(propsalBinaryRep, 0, propsalBinaryRep.Length);
-                        activityXML.Append("<AttachmentData>" + xmlPropsalBinaryRepData + "</AttachmentData>");
-                        location++;
-                        break;
-                    }
-                    activityXML.Append("</Attachment>");
-                    activityXML.Append("</Attachments>");
-                    activityXML.Append("<eSignature/>");
-                    activityXML.Append("</Activity>");
-                    activityXML.Append("</Item>");
-                    activityXML.Append("</PostActivity>");
+                    activityXML.Append("x = x & <Attachments>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <Attachment>" + "& vbCrLf")))))))))))))))))));
+                    //foreach (Attachment attachment in SentProposals)
+                    //{
+                    //    activityXML.Append("x = x & <AttachmentName>" + SentProposals[location].Name + "</AttachmentName>" + "& vbCrLf" +
+                    //    activityXML.Append("x = x & <AttachmentExt>pdf</AttachmentExt>" + "& vbCrLf"));
+                    //    propsalBinaryRep = new byte[SentProposals[location].ContentStream.Length];
+                    //    string xmlPropsalBinaryRepData;
+                    //    SentProposals[location].ContentStream.Read(propsalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
+                    //    SentProposals[location].ContentStream.Close();
+                    //    xmlPropsalBinaryRepData = System.Convert.ToBase64String(propsalBinaryRep, 0, propsalBinaryRep.Length);
+                    //    activityXML.Append("x = x & <AttachmentData>" + xmlPropsalBinaryRepData + "</AttachmentData>" + "& vbCrLf");
+                    //    location++;
+                    //    break;
+                    //}
+                    activityXML.Append("x = x & </Attachment>" + "& vbCrLf" +
+                    activityXML.Append("x = x & </Attachments>" + "& vbCrLf" +
+                    activityXML.Append("x = x & <eSignature/>" + "& vbCrLf" +
+                    activityXML.Append("x = x & </Activity>" + "& vbCrLf" +
+                    activityXML.Append("x = x & </Item>" + "& vbCrLf" +
+                    activityXML.Append("x = x & </PostActivity>"))))));
 
-                    ProLogicBid.Agent postActivity = new ProLogicBid.Agent();
-                    postActivity.SendEventDelegate("acivityPost", activityXML.ToString());                    
-                    
+                    //ProLogicBid.Agent postActivity = new ProLogicBid.Agent();
+                    //postActivity.SendEventDelegate("acivityPost", activityXML.ToString());
+
+
+
+
                 }
             }
             catch (Exception e)

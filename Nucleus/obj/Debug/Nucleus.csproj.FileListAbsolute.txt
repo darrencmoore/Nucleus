@@ -7,8 +7,8 @@ C:\Users\darrenm\Documents\Visual Studio 2015\Projects\Nucleus\Nucleus\obj\Debug
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\Nucleus.dll.config
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\Nucleus.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\Nucleus.pdb
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\BidAgent.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\CrystalDecisions.CrystalReports.Engine.dll
-C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\ProLogicBid.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\CrystalDecisions.Shared.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\CrystalDecisions.ReportAppServer.DataDefModel.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\CrystalDecisions.ReportAppServer.ClientDoc.dll
@@ -24,9 +24,8 @@ C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\CrystalDecisions.ReportAppSer
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\log4net.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\CrystalDecisions.ReportAppServer.CommonControls.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\stdole.dll
-C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\ProLogicBid.pdb
-C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\ProLogicBid.xml
-C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Debug\Nucleus.csprojResolveAssemblyReference.cache
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\BidAgent.pdb
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\BidAgent.xml
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Debug\Interop.Encore.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Debug\Nucleus.csproj.ResolveComReference.cache
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Debug\Nucleus.dll

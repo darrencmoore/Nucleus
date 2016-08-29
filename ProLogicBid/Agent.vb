@@ -1,17 +1,23 @@
 ﻿Public Class Agent
 
-    Public Sub InitiateBidProposal(ID As String)
-        Dim startInfo As New ProcessStartInfo
-        startInfo.FileName = ("C:\Users\darrenm\Desktop\ProLogicReportingApplication\ProLogicReportingApplication\bin\Debug\ProLogicReportingApplication.exe")
-        startInfo.Arguments = ID
-        Process.Start(startInfo)
-    End Sub
+    Public Function InitiateBidProposal(ID As String, blank As String) As String
+        MsgBox("InitiateBidProposal")
+        'Dim startInfo As New ProcessStartInfo
+        'startInfo.FileName = ("C:\Users\darrenm\Desktop\ProLogicReportingApplication\ProLogicReportingApplication\bin\Debug\ProLogicReportingApplication.exe")
+        'startInfo.Arguments = ID
+        'Process.Start(startInfo)
+        Return ""
+    End Function
 
     Public Event SendEvent(ByRef activityType As String, ByRef XMLIn As String)
 
     Public Function SendEventDelegate(activityType As String, XMLIn As String)
+        MsgBox("Inside PorLogic.dll")
+
+
         RaiseEvent SendEvent(activityType, XMLIn)
-        Return ""
+        Return XMLIn
+
     End Function
 
 End Class

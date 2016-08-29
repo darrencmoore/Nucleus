@@ -1,6 +1,7 @@
 C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\bin\Release\ProLogicBid.dll
 C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\bin\Release\ProLogicBid.pdb
 C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\bin\Release\ProLogicBid.xml
+C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\obj\Release\ProLogicBid.vbprojResolveAssemblyReference.cache
 C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\obj\Release\ProLogicBid.Resources.resources
 C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\obj\Release\ProLogicBid.vbproj.GenerateResource.Cache
 C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\obj\Release\ProLogicBid.dll
