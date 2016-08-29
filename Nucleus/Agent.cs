@@ -18,8 +18,8 @@ namespace Nucleus
     {
         private SqlConnection _sqlConn;
         private SqlCommand _sqlCommand;
-        private string _connStr;
-                
+        private string _connStr;        
+
 
         #region Getter/Setter ZContactContractsSelect
 
@@ -260,6 +260,10 @@ namespace Nucleus
                     activityXML.Append("</Activity>");
                     activityXML.Append("</Item>");
                     activityXML.Append("</PostActivity>");
+
+                    ProLogicBid.Agent postActivity = new ProLogicBid.Agent();
+                    postActivity.SendEventDelegate("acivityPost", activityXML.ToString());                    
+                    
                 }
             }
             catch (Exception e)
