@@ -1,6 +1,6 @@
 ﻿Public Class Agent
 
-    Public Sub InitiateNucleus(ID As String)
+    Public Sub InitiateBidProposal(ID As String)
         Dim startInfo As New ProcessStartInfo
         startInfo.FileName = ("C:\Users\darrenm\Desktop\ProLogicReportingApplication\ProLogicReportingApplication\bin\Debug\ProLogicReportingApplication.exe")
         startInfo.Arguments = ID
