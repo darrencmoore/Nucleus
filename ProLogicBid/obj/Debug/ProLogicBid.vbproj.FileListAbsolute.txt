@@ -1,0 +1,8 @@
+C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\bin\Debug\ProLogicBid.dll
+C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\bin\Debug\ProLogicBid.pdb
+C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\bin\Debug\ProLogicBid.xml
+C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\obj\Debug\ProLogicBid.Resources.resources
+C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\obj\Debug\ProLogicBid.vbproj.GenerateResource.Cache
+C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\obj\Debug\ProLogicBid.dll
+C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\obj\Debug\ProLogicBid.xml
+C:\Users\darrenm\Desktop\Nucleus\ProLogicBid\obj\Debug\ProLogicBid.pdb

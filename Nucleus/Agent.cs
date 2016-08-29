@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Text;
 using System.Net.Mail;
+using ProLogicBid;
 
 /// <summary>
 /// Created On: 6/22/2016
