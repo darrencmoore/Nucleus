@@ -213,8 +213,6 @@ namespace Nucleus
             {
                 foreach (Guid activity in StartActvities)
                 {
-                    
-
                     string activity_DimX = "Dim x As String = ' '";
                     string activity_FunctionName = "Function ActivityPost(a,b)";
                     string activity_DimXmlOut = "Dim XMLOut";
@@ -318,9 +316,9 @@ namespace Nucleus
                     activity_XmlDoc.Append("XMLDoc =" + activity_PostTag);
 
                     //Lay the structure for getting a new Operator
-
+                     
                     Encore.Utilities sessionInstance = new Encore.Utilities();
-                    string sessionID = sessionInstance.Logon("ENET_CMSP01", "uP1ndkE9", "TEST [TEST FOR 360 SHEET METAL LLC]", " ", Encore.Language.ENGLISH, 0, 0, " ");                    
+                    string sessionID = sessionInstance.Logon("ENET_CMSP01", "uP1ndkE9", "TEST", " ", Encore.Language.ENGLISH, 0, 0, " ");                    
                     Encore.Transaction postActivity = new Encore.Transaction();
                     postActivity.Post(sessionID, "CMSTAT", activity_XmlParam.ToString(), activity_XmlDoc.ToString());
                     sessionInstance.Logoff(sessionID);                    
