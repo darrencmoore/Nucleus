@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Text;
 using System.Net.Mail;
+using Agent;
+
+
 
 
 /// <summary>
@@ -19,8 +23,10 @@ namespace Nucleus
     {
         private SqlConnection _sqlConn;
         private SqlCommand _sqlCommand;
-        private string _connStr;        
-
+        private string _connStr;
+        string activity_AttachmentName;
+        string activity_AttachmentExt;
+        string activity_AttachmentData;
 
         #region Getter/Setter ZContactContractsSelect
 
@@ -195,82 +201,129 @@ namespace Nucleus
         /// <param name="StartActvities"></param>
         /// <param name="SentProposals"></param>
         public void PostXmlForSyspro(List<Guid> StartActvities, List<Attachment> SentProposals)
-        {
-            // not needed for reporting. 
-            // but needed for scanning
-            //Encore.Utilities dll = new Encore.Utilities();
-            //dll.Logon("ADMIN", " ", "TEST [TEST FOR 360 SHEET METAL LLC]", " ", Encore.Language.ENGLISH, 0, 0, " ");
-            //Declaration
+        {            
             DateTime bidSentDate = DateTime.Now;
             string formatDate = "yyyy-MM-dd";
             DateTime bidSentTime = DateTime.Now;
             string formatTime = "hh:mm:ss";
             int location = 0;
-            byte[] propsalBinaryRep;
+            byte[] propsalBinaryRep;            
 
             try
             {
                 foreach (Guid activity in StartActvities)
                 {
-                    StringBuilder activityXML = new StringBuilder();
-                    activityXML.Append("Function RunMe(1,2)" + "& vbCrLf" +
-                    activityXML.Append("Dim x As String" + "& vbCrLf" +
+                    
 
-                    activityXML.Append("x = <PostActivity xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" xsd:noNamespaceSchemaLocation=\"CMSTATDOC.XSD\">" + "& vbCrLf" +
-                    activityXML.Append("x = x & <Item>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <ContactId>{" + activity + "}</ContactId>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <Activity>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <ActivityType>12</ActivityType>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <Private>N</Private>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <StartDate>" + bidSentDate.ToString(formatDate) + "</StartDate>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <StartTime>" + bidSentTime.ToString(formatTime) + "</StartTime>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <EndDate>" + bidSentDate.ToString(formatDate) + "</EndDate>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <EndTime>" + bidSentTime.ToString(formatTime) + "</EndTime>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <Subject>Bid Proposal</Subject>" + "& vbCrLf" +
-                    //activityXML.Append("<Location>Head office</Location>");
-                    //activityXML.Append("<Regarding>Sales call</Regarding>");
-                    activityXML.Append("x = x & <Result>Email sent</Result>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <UserField1>User Field 1</UserField1>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <UserField2>User Field 2</UserField2>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <UserField3>User Field 3</UserField3>" + "& vbCrLf" +
-                    //activityXML.Append("<Priority>9</Priority>");
-                    //activityXML.Append("<FollowUpFlag>1</FollowUpFlag>");
-                    //activityXML.Append("<FollowUpReqd>Y</FollowUpReqd>");
-                    //activityXML.Append("<FollowUpDate>2008-01-03</FollowUpDate>");
-                    //activityXML.Append("<FollowUpTime>08:30:00</FollowUpTime>");
-                    //activityXML.Append("<AllDayEvent>N</AllDayEvent>");
-                    //activityXML.Append("<ShowTimeAs>B</ShowTimeAs>");
-                    //activityXML.Append("<TaskDueDate>2008-02-01</TaskDueDate>");
-                    //activityXML.Append("<TaskPctComplete>50</TaskPctComplete>");
-                    //activityXML.Append("<TaskStatus>4</TaskStatus>");
-                    activityXML.Append("x = x & <Attachments>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <Attachment>" + "& vbCrLf")))))))))))))))))));
-                    //foreach (Attachment attachment in SentProposals)
-                    //{
-                    //    activityXML.Append("x = x & <AttachmentName>" + SentProposals[location].Name + "</AttachmentName>" + "& vbCrLf" +
-                    //    activityXML.Append("x = x & <AttachmentExt>pdf</AttachmentExt>" + "& vbCrLf"));
-                    //    propsalBinaryRep = new byte[SentProposals[location].ContentStream.Length];
-                    //    string xmlPropsalBinaryRepData;
-                    //    SentProposals[location].ContentStream.Read(propsalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
-                    //    SentProposals[location].ContentStream.Close();
-                    //    xmlPropsalBinaryRepData = System.Convert.ToBase64String(propsalBinaryRep, 0, propsalBinaryRep.Length);
-                    //    activityXML.Append("x = x & <AttachmentData>" + xmlPropsalBinaryRepData + "</AttachmentData>" + "& vbCrLf");
-                    //    location++;
-                    //    break;
-                    //}
-                    activityXML.Append("x = x & </Attachment>" + "& vbCrLf" +
-                    activityXML.Append("x = x & </Attachments>" + "& vbCrLf" +
-                    activityXML.Append("x = x & <eSignature/>" + "& vbCrLf" +
-                    activityXML.Append("x = x & </Activity>" + "& vbCrLf" +
-                    activityXML.Append("x = x & </Item>" + "& vbCrLf" +
-                    activityXML.Append("x = x & </PostActivity>"))))));
+                    string activity_DimX = "Dim x As String = ' '";
+                    string activity_FunctionName = "Function ActivityPost(a,b)";
+                    string activity_DimXmlOut = "Dim XMLOut";
+                    string activity_DimXmlParam = "Dim XMLParam";
+                    string activity_DimXmlDoc = "Dim XMLDoc";
+                    string activity_OpenPostActivityTag = "<PostActivity>";                    
+                    string activity_OpenItemTag = "<Item>";
+                    string activity_ContactGuid = "<ContactId>{" + activity + "}</ContactId>";
+                    string activity_OpenActivityTag = "<Activity>";
+                    string activity_ActivityType = "< ActivityType > 12 </ ActivityType >";
+                    string activity_PrivateTag = "<Private>N</Private>";
+                    string activity_StartDate = "<StartDate>" + bidSentDate.ToString(formatDate) + "</StartDate>";
+                    string activity_StartTime = "<StartTime>" + bidSentTime.ToString(formatTime) + "</StartTime>";
+                    string activity_EndDate = "<EndDate>" + bidSentDate.ToString(formatDate) + "</EndDate>";
+                    string activity_EndTime = "<EndTime>" + bidSentTime.ToString(formatTime) + "</EndTime>";
+                    string activity_AcivitySubject = "<Subject>Bid Proposal</Subject>";
+                    string activity_ActivityResult = "<Result>Email sent</Result>";
+                    string activity_UserField1 = "<UserField1>User Field 1</UserField1>";
+                    string activity_UserField2 = "<UserField1>User Field 2</UserField1>";
+                    string activity_UserField3 = "<UserField1>User Field 3</UserField1>";
+                    string activity_Source = "<Source>DotNet</Source>";
+                    string activity_OpenAttachmentsTag = "<Attachments>";
+                    string activity_OpenAttachmentTag = "<Attachment>";
+                    foreach (Attachment attachment in SentProposals)
+                    {
+                        string _attachmentName = "<AttachmentName>" + SentProposals[location].Name + "</AttachmentName>";
+                        activity_AttachmentName = _attachmentName;
+                        string _attachmentExt = "<AttachmentExt>pdf</AttachmentExt>";
+                        activity_AttachmentExt = _attachmentExt;
+                        propsalBinaryRep = new byte[SentProposals[location].ContentStream.Length];
+                        string xmlPropsalBinaryRepData;
+                        SentProposals[location].ContentStream.Read(propsalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
+                        SentProposals[location].ContentStream.Close();
+                        xmlPropsalBinaryRepData = System.Convert.ToBase64String(propsalBinaryRep, 0, propsalBinaryRep.Length);
+                        string _attachmentData = "<AttachmentData>" + xmlPropsalBinaryRepData + "</AttachmentData>";
+                        activity_AttachmentData = _attachmentData;
+                        location++;
+                        break;                       
+                    }
+                    string activity_ClosingAttachmentTag = "</Attachment>";
+                    string activity_ClosingAttachmentsTag = "</Attachments>";
+                    string activity_ESignature = "<eSignature/>";
+                    string activity_ClosingActivityTag = "</Activity>";
+                    string activity_ClosingItemTag = "</Item>";
+                    string activity_PostTag = "</PostActivity>";
 
-                    //ProLogicBid.Agent postActivity = new ProLogicBid.Agent();
-                    //postActivity.SendEventDelegate("acivityPost", activityXML.ToString());
+                    StringBuilder activity_XmlParam = new StringBuilder();
+                    activity_XmlParam.Append(activity_DimX);
+                    activity_XmlParam.Append(activity_FunctionName);
+                    activity_XmlParam.Append(activity_DimXmlOut);
+                    activity_XmlParam.Append(activity_DimXmlParam);
+                    activity_XmlParam.Append(activity_DimXmlDoc);
+                    activity_XmlParam.Append("XMLParam =" + "<PostActivity>");
+                    activity_XmlParam.Append("XMLParam =" + "<Parameters>");
+                    activity_XmlParam.Append("XMLParam =" + "<ActionType>A</ActionType>");
+                    activity_XmlParam.Append("XMLParam =" + "<AttendeeIdType>{email}</AttendeeIdType>");
+                    activity_XmlParam.Append("XMLParam =" + "<ApplyIfEntireDocumentValid>N</ApplyIfEntireDocumentValid>");
+                    activity_XmlParam.Append("XMLParam =" + "<IgnoreAttachmentsOnChange>N</IgnoreAttachmentsOnChange>");
+                    activity_XmlParam.Append("XMLParam =" + "</Parameters>");
+                    activity_XmlParam.Append("XMLParam =" + "</PostActivity>");
 
+                    StringBuilder activity_XmlDoc = new StringBuilder();                    
+                    activity_XmlDoc.Append("XMLDoc =" + activity_OpenPostActivityTag);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_OpenItemTag);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_ContactGuid);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_OpenActivityTag);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_ActivityType);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_PrivateTag);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_StartDate);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_StartTime);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_EndDate);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_EndTime);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_AcivitySubject);
+                    //activity_XmlDoc.Append("XMLDoc =" + "<Location>Head office</Location>");
+                    //activity_XmlDoc.Append("XMLDoc =" + "<Regarding>Sales call</Regarding>");
+                    activity_XmlDoc.Append("XMLDoc =" + activity_ActivityResult);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_UserField1);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_UserField2);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_UserField3);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_Source);
+                    //activity_XmlDoc.Append("XMLDoc =" + "<Priority>9</Priority>");
+                    //activity_XmlDoc.Append("XMLDoc =" + "<FollowUpFlag>1</FollowUpFlag>");
+                    //activity_XmlDoc.Append("XMLDoc =" + "<FollowUpReqd>Y</FollowUpReqd>");
+                    //activity_XmlDoc.Append("XMLDoc =" + "<FollowUpDate>2008-01-03</FollowUpDate>");
+                    //activity_XmlDoc.Append("XMLDoc =" + "<FollowUpTime>08:30:00</FollowUpTime>");
+                    //activity_XmlDoc.Append("XMLDoc =" + "<AllDayEvent>N</AllDayEvent>");
+                    //activity_XmlDoc.Append("XMLDoc =" + "<ShowTimeAs>B</ShowTimeAs>");
+                    //activity_XmlDoc.Append("XMLDoc =" + "<TaskDueDate>2008-02-01</TaskDueDate>");
+                    //activity_XmlDoc.Append("XMLDoc =" + "<TaskPctComplete>50</TaskPctComplete>");
+                    //activity_XmlDoc.Append("XMLDoc =" + "<TaskStatus>4</TaskStatus>");
+                    activity_XmlDoc.Append("XMLDoc =" + activity_OpenAttachmentsTag);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_OpenAttachmentTag);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_AttachmentName);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_AttachmentExt);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_AttachmentData);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_ClosingAttachmentTag);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_ClosingAttachmentsTag);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_ESignature);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_ClosingActivityTag);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_ClosingItemTag);
+                    activity_XmlDoc.Append("XMLDoc =" + activity_PostTag);
 
+                    //Lay the structure for getting a new Operator
 
-
+                    Encore.Utilities sessionInstance = new Encore.Utilities();
+                    string sessionID = sessionInstance.Logon("ENET_CMSP01", "uP1ndkE9", "TEST [TEST FOR 360 SHEET METAL LLC]", " ", Encore.Language.ENGLISH, 0, 0, " ");                    
+                    Encore.Transaction postActivity = new Encore.Transaction();
+                    postActivity.Post(sessionID, "CMSTAT", activity_XmlParam.ToString(), activity_XmlDoc.ToString());
+                    sessionInstance.Logoff(sessionID);                    
                 }
             }
             catch (Exception e)

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nucleus", "Nucleus\Nucleus.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProLogicReportingApplication", "..\ProLogicReportingApplication\ProLogicReportingApplication\ProLogicReportingApplication.csproj", "{7BA59907-F239-41B5-A798-62E35E4AEA52}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "BidAgent", "..\Agent\Agent\BidAgent.vbproj", "{13945615-58AB-48D5-85F7-D5FECA4F5862}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{7BA59907-F239-41B5-A798-62E35E4AEA52}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BA59907-F239-41B5-A798-62E35E4AEA52}.Release|x64.ActiveCfg = Release|x64
 		{7BA59907-F239-41B5-A798-62E35E4AEA52}.Release|x64.Build.0 = Release|x64
+		{13945615-58AB-48D5-85F7-D5FECA4F5862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13945615-58AB-48D5-85F7-D5FECA4F5862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13945615-58AB-48D5-85F7-D5FECA4F5862}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{13945615-58AB-48D5-85F7-D5FECA4F5862}.Debug|x64.Build.0 = Debug|Any CPU
+		{13945615-58AB-48D5-85F7-D5FECA4F5862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13945615-58AB-48D5-85F7-D5FECA4F5862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13945615-58AB-48D5-85F7-D5FECA4F5862}.Release|x64.ActiveCfg = Release|Any CPU
+		{13945615-58AB-48D5-85F7-D5FECA4F5862}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

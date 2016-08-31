@@ -26,6 +26,7 @@ C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\CrystalDecisions.ReportAppSer
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\stdole.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\BidAgent.pdb
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\bin\Debug\BidAgent.xml
+C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Debug\Nucleus.csprojResolveAssemblyReference.cache
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Debug\Interop.Encore.dll
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Debug\Nucleus.csproj.ResolveComReference.cache
 C:\Users\darrenm\Desktop\Nucleus\Nucleus\obj\Debug\Nucleus.dll
