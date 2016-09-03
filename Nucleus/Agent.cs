@@ -24,9 +24,14 @@ namespace Nucleus
         private SqlConnection _sqlConn;
         private SqlCommand _sqlCommand;
         private string _connStr;
+        private string _operator;
+        private string _usedOperator;
+        private string _availableOperator;
         string activity_AttachmentName;
         string activity_AttachmentExt;
         string activity_AttachmentData;
+        private static string FUNCTIONALAREA_CMSP = "CMSP";
+
 
         #region Getter/Setter ZContactContractsSelect
 
@@ -207,22 +212,17 @@ namespace Nucleus
             DateTime bidSentTime = DateTime.Now;
             string formatTime = "hh:mm:ss";
             int location = 0;
-            byte[] propsalBinaryRep;            
+            byte proposalBinaryRep;            
 
             try
             {
                 foreach (Guid activity in StartActvities)
-                {
-                    string activity_DimX = "Dim x As String = ' '";
-                    string activity_FunctionName = "Function ActivityPost(a,b)";
-                    string activity_DimXmlOut = "Dim XMLOut";
-                    string activity_DimXmlParam = "Dim XMLParam";
-                    string activity_DimXmlDoc = "Dim XMLDoc";
+                {                    
                     string activity_OpenPostActivityTag = "<PostActivity>";                    
                     string activity_OpenItemTag = "<Item>";
                     string activity_ContactGuid = "<ContactId>{" + activity + "}</ContactId>";
                     string activity_OpenActivityTag = "<Activity>";
-                    string activity_ActivityType = "< ActivityType > 12 </ ActivityType >";
+                    string activity_ActivityType = "<ActivityType>12</ActivityType >";
                     string activity_PrivateTag = "<Private>N</Private>";
                     string activity_StartDate = "<StartDate>" + bidSentDate.ToString(formatDate) + "</StartDate>";
                     string activity_StartTime = "<StartTime>" + bidSentTime.ToString(formatTime) + "</StartTime>";
@@ -242,12 +242,12 @@ namespace Nucleus
                         activity_AttachmentName = _attachmentName;
                         string _attachmentExt = "<AttachmentExt>pdf</AttachmentExt>";
                         activity_AttachmentExt = _attachmentExt;
-                        propsalBinaryRep = new byte[SentProposals[location].ContentStream.Length];
-                        string xmlPropsalBinaryRepData;
-                        SentProposals[location].ContentStream.Read(propsalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
+                        proposalBinaryRep = Convert.ToByte(SentProposals[location].ContentStream.Length);
+                        byte xmlProposalBinaryRepData;
+                        //SentProposals[location].ContentStream.Read(proposalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
                         SentProposals[location].ContentStream.Close();
-                        xmlPropsalBinaryRepData = System.Convert.ToBase64String(propsalBinaryRep, 0, propsalBinaryRep.Length);
-                        string _attachmentData = "<AttachmentData>" + xmlPropsalBinaryRepData + "</AttachmentData>";
+                        xmlProposalBinaryRepData = proposalBinaryRep;
+                        string _attachmentData = "<AttachmentData>" + proposalBinaryRep + "</AttachmentData>";
                         activity_AttachmentData = _attachmentData;
                         location++;
                         break;                       
@@ -260,39 +260,34 @@ namespace Nucleus
                     string activity_PostTag = "</PostActivity>";
 
                     StringBuilder activity_XmlParam = new StringBuilder();
-                    activity_XmlParam.Append(activity_DimX);
-                    activity_XmlParam.Append(activity_FunctionName);
-                    activity_XmlParam.Append(activity_DimXmlOut);
-                    activity_XmlParam.Append(activity_DimXmlParam);
-                    activity_XmlParam.Append(activity_DimXmlDoc);
-                    activity_XmlParam.Append("XMLParam =" + "<PostActivity>");
-                    activity_XmlParam.Append("XMLParam =" + "<Parameters>");
-                    activity_XmlParam.Append("XMLParam =" + "<ActionType>A</ActionType>");
-                    activity_XmlParam.Append("XMLParam =" + "<AttendeeIdType>{email}</AttendeeIdType>");
-                    activity_XmlParam.Append("XMLParam =" + "<ApplyIfEntireDocumentValid>N</ApplyIfEntireDocumentValid>");
-                    activity_XmlParam.Append("XMLParam =" + "<IgnoreAttachmentsOnChange>N</IgnoreAttachmentsOnChange>");
-                    activity_XmlParam.Append("XMLParam =" + "</Parameters>");
-                    activity_XmlParam.Append("XMLParam =" + "</PostActivity>");
+                    activity_XmlParam.Append("<PostActivity>");
+                    activity_XmlParam.Append("<Parameters>");
+                    activity_XmlParam.Append("<ActionType>A</ActionType>");
+                    activity_XmlParam.Append("<AttendeeIdType>{email}</AttendeeIdType>");
+                    activity_XmlParam.Append("<ApplyIfEntireDocumentValid>N</ApplyIfEntireDocumentValid>");
+                    activity_XmlParam.Append("<IgnoreAttachmentsOnChange>N</IgnoreAttachmentsOnChange>");
+                    activity_XmlParam.Append("</Parameters>");
+                    activity_XmlParam.Append("</PostActivity>");
 
                     StringBuilder activity_XmlDoc = new StringBuilder();                    
-                    activity_XmlDoc.Append("XMLDoc =" + activity_OpenPostActivityTag);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_OpenItemTag);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_ContactGuid);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_OpenActivityTag);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_ActivityType);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_PrivateTag);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_StartDate);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_StartTime);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_EndDate);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_EndTime);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_AcivitySubject);
+                    activity_XmlDoc.Append(activity_OpenPostActivityTag);
+                    activity_XmlDoc.Append(activity_OpenItemTag);
+                    activity_XmlDoc.Append(activity_ContactGuid);
+                    activity_XmlDoc.Append(activity_OpenActivityTag);
+                    activity_XmlDoc.Append(activity_ActivityType);
+                    activity_XmlDoc.Append(activity_PrivateTag);
+                    activity_XmlDoc.Append(activity_StartDate);
+                    activity_XmlDoc.Append(activity_StartTime);
+                    activity_XmlDoc.Append(activity_EndDate);
+                    activity_XmlDoc.Append(activity_EndTime);
+                    activity_XmlDoc.Append(activity_AcivitySubject);
                     //activity_XmlDoc.Append("XMLDoc =" + "<Location>Head office</Location>");
                     //activity_XmlDoc.Append("XMLDoc =" + "<Regarding>Sales call</Regarding>");
-                    activity_XmlDoc.Append("XMLDoc =" + activity_ActivityResult);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_UserField1);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_UserField2);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_UserField3);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_Source);
+                    activity_XmlDoc.Append(activity_ActivityResult);
+                    activity_XmlDoc.Append(activity_UserField1);
+                    activity_XmlDoc.Append(activity_UserField2);
+                    activity_XmlDoc.Append(activity_UserField3);
+                    activity_XmlDoc.Append(activity_Source);
                     //activity_XmlDoc.Append("XMLDoc =" + "<Priority>9</Priority>");
                     //activity_XmlDoc.Append("XMLDoc =" + "<FollowUpFlag>1</FollowUpFlag>");
                     //activity_XmlDoc.Append("XMLDoc =" + "<FollowUpReqd>Y</FollowUpReqd>");
@@ -303,32 +298,80 @@ namespace Nucleus
                     //activity_XmlDoc.Append("XMLDoc =" + "<TaskDueDate>2008-02-01</TaskDueDate>");
                     //activity_XmlDoc.Append("XMLDoc =" + "<TaskPctComplete>50</TaskPctComplete>");
                     //activity_XmlDoc.Append("XMLDoc =" + "<TaskStatus>4</TaskStatus>");
-                    activity_XmlDoc.Append("XMLDoc =" + activity_OpenAttachmentsTag);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_OpenAttachmentTag);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_AttachmentName);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_AttachmentExt);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_AttachmentData);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_ClosingAttachmentTag);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_ClosingAttachmentsTag);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_ESignature);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_ClosingActivityTag);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_ClosingItemTag);
-                    activity_XmlDoc.Append("XMLDoc =" + activity_PostTag);
+                    activity_XmlDoc.Append(activity_OpenAttachmentsTag);
+                    activity_XmlDoc.Append(activity_OpenAttachmentTag);
+                    activity_XmlDoc.Append(activity_AttachmentName);
+                    activity_XmlDoc.Append(activity_AttachmentExt);
+                    activity_XmlDoc.Append(activity_AttachmentData);
+                    activity_XmlDoc.Append(activity_ClosingAttachmentTag);
+                    activity_XmlDoc.Append(activity_ClosingAttachmentsTag);
+                    activity_XmlDoc.Append(activity_ESignature);
+                    activity_XmlDoc.Append(activity_ClosingActivityTag);
+                    activity_XmlDoc.Append(activity_ClosingItemTag);
+                    activity_XmlDoc.Append(activity_PostTag);
 
-                    //Lay the structure for getting a new Operator
-                     
+                    _availableOperator = GetOperator();
+
                     Encore.Utilities sessionInstance = new Encore.Utilities();
-                    string sessionID = sessionInstance.Logon("ENET_CMSP01", "uP1ndkE9", "TEST", " ", Encore.Language.ENGLISH, 0, 0, " ");                    
+                    string sessionID = sessionInstance.Logon(_availableOperator, "uP1ndkE9", "TEST", " ", Encore.Language.ENGLISH, 0, 0, " ");
                     Encore.Transaction postActivity = new Encore.Transaction();
                     postActivity.Post(sessionID, "CMSTAT", activity_XmlParam.ToString(), activity_XmlDoc.ToString());
-                    sessionInstance.Logoff(sessionID);                    
-                }
+                    sessionInstance.Logoff(sessionID);
+
+                    ClearOperator(_availableOperator);                                       
+                }                
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e.ToString());              
             }            
         }
+        #endregion
+
+        #region Get Available Operator
+        private string GetOperator()
+        {
+            try
+            {
+                SqlDataReader sqlReader;
+                _connStr = ConfigurationManager.ConnectionStrings["SYSPRO_SQL_SERVER"].ConnectionString;
+                DBOpenConnection();
+                _sqlCommand = new SqlCommand("usp_ENetUserGet", _sqlConn);
+                _sqlCommand.CommandType = CommandType.StoredProcedure;
+                _sqlCommand.Parameters.Add(new SqlParameter("@FunctionalArea", FUNCTIONALAREA_CMSP));                
+                sqlReader = _sqlCommand.ExecuteReader();
+
+                if (sqlReader.HasRows)
+                {
+                    while (sqlReader.Read())
+                    {
+                        _operator = sqlReader.GetString(0);
+                    }
+                }
+                
+                return _operator;
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("All ENet Users currently in use.  Please contact your Administrator.");
+            }
+
+            return null;
+        }
+        #endregion
+
+        #region 
+        private void ClearOperator(string usedOperator)
+        {
+            SqlDataReader sqlReader;
+            _connStr = ConfigurationManager.ConnectionStrings["SYSPRO_SQL_SERVER"].ConnectionString;
+            DBOpenConnection();
+            _sqlCommand = new SqlCommand("usp_ENetUserClear", _sqlConn);
+            _sqlCommand.CommandType = CommandType.StoredProcedure;
+            _sqlCommand.Parameters.Add(new SqlParameter("@UserID", usedOperator));            
+            sqlReader = _sqlCommand.ExecuteReader();
+        }
+
         #endregion
     }
 }
