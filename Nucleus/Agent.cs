@@ -27,6 +27,9 @@ namespace Nucleus
         private string _operator;
         private string revisionNum;
         private string _availableOperator;
+        private int _boxChecked;
+        private int _contractCurrentRevisionNum;
+        public int _contractContactRevisionNum;
         string activity_AttachmentName;
         string activity_AttachmentExt;
         string activity_AttachmentData;
@@ -73,13 +76,13 @@ namespace Nucleus
             }
             if(item.Contains("{ Header = Item Level 1 }"))
             {
-                if (item.Contains("BidSent = 0"))
+                if (item.Contains("BoxChecked = 0"))
                 {
-                    item = item.Replace("BidSent = 0", "False");
+                    item = item.Replace("BoxChecked = 0", "False");
                 }
-                else if (item.Contains("BidSent = 1"))
+                else if (item.Contains("BoxChecked = 1"))
                 {                    
-                    item = item.Replace("BidSent = 1", "True");
+                    item = item.Replace("BoxChecked = 1", "True");
                 }              
                 Agent_ContractContacts.Add(item);
             }
@@ -150,10 +153,13 @@ namespace Nucleus
                     while (sqlReader.Read())
                     {
                         AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(2) + " " + "{ Header = Item Level 0 }"); //Account ID + Account Name
-                        AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(4) + " " + "{ Header = Item Level 1 }" + " " + "BidSent = " + sqlReader.GetInt32(15)); //Account ID + Contact Full Name + Bid Sent
-                        AgentContractContactsListItem(sqlReader.GetString(1) + "_" + sqlReader.GetGuid(3) + "_" + sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }" + " " + "{" + sqlReader.GetInt32(14) + "}"); //Account ID + Contact Guid + Contact Email Address + Contract Current Revision
+                        _boxChecked = sqlReader.GetInt32(14); // Box Checked                        
+                        AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(4) + " " + "{ Header = Item Level 1 }" + " " + "BoxChecked = " + _boxChecked); //Account ID + Contact Full Name + Box Checked                                                
+                       
+                        _contractCurrentRevisionNum = sqlReader.GetInt32(13); // Contract Current Revision
+                        AgentContractContactsListItem(sqlReader.GetString(1) + "_" + sqlReader.GetGuid(3) + "_" + sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }" + " " + "{" + _contractCurrentRevisionNum + "}"); //Account ID + Contact Guid + Contact Email Address + Contract Current Revision                        
                         // This is for debugging, if any fields get added 
-                        //Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}", sqlReader.GetString(0), sqlReader.GetString(1), sqlReader.GetString(2), sqlReader.GetGuid(3), sqlReader.GetString(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetString(9), sqlReader.GetString(10), sqlReader.GetDateTime(11), sqlReader.GetDateTime(12), sqlReader.GetInt32(13), sqlReader.GetInt32(14), sqlReader.GetInt32(15));
+                        Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}", sqlReader.GetString(0), sqlReader.GetString(1), sqlReader.GetString(2), sqlReader.GetGuid(3), sqlReader.GetString(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetString(9), sqlReader.GetString(10), sqlReader.GetDateTime(11), sqlReader.GetDateTime(12), sqlReader.GetInt32(13), sqlReader.GetInt32(14));
                     }
                 }
                 else
@@ -241,9 +247,9 @@ namespace Nucleus
                     string activity_StartTime = "<StartTime>" + bidSentTime.ToString(formatTime) + "</StartTime>";
                     string activity_EndDate = "<EndDate>" + bidSentDate.ToString(formatDate) + "</EndDate>";
                     string activity_EndTime = "<EndTime>" + bidSentTime.ToString(formatTime) + "</EndTime>";
-                    foreach(string currentRevisionNum in CurrentRevision)
+                    foreach(string revs in CurrentRevision)
                     {
-                        revisionNum = currentRevisionNum;                        
+                        revisionNum = CurrentRevision[currentRevisionLocation];
                         currentRevisionLocation++;
                         break;
                     }
@@ -393,7 +399,7 @@ namespace Nucleus
         }
         #endregion
 
-        #region 
+        #region Clear Operator
         private void ClearOperator(string usedOperator)
         {
             SqlDataReader sqlReader;
