@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Net.Mime;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Linq;
@@ -8,9 +10,7 @@ using System.Configuration;
 using System.Text;
 using System.Net.Mail;
 using Agent;
-
-
-
+//using ProLogicReportingApplication;
 
 /// <summary>
 /// Created On: 6/22/2016
@@ -25,7 +25,7 @@ namespace Nucleus
         private SqlCommand _sqlCommand;
         private string _connStr;
         private string _operator;
-        private string _usedOperator;
+        private string revisionNum;
         private string _availableOperator;
         string activity_AttachmentName;
         string activity_AttachmentExt;
@@ -73,6 +73,14 @@ namespace Nucleus
             }
             if(item.Contains("{ Header = Item Level 1 }"))
             {
+                if (item.Contains("BidSent = 0"))
+                {
+                    item = item.Replace("BidSent = 0", "False");
+                }
+                else if (item.Contains("BidSent = 1"))
+                {                    
+                    item = item.Replace("BidSent = 1", "True");
+                }              
                 Agent_ContractContacts.Add(item);
             }
             if (item.Contains("{ Header = Item Level 2 }"))
@@ -142,10 +150,10 @@ namespace Nucleus
                     while (sqlReader.Read())
                     {
                         AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(2) + " " + "{ Header = Item Level 0 }"); //Account ID + Account Name
-                        AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(4) + " " + "{ Header = Item Level 1 }"); //Account ID + Contact Full Name
-                        AgentContractContactsListItem(sqlReader.GetString(1) + "_" + sqlReader.GetGuid(3) + "_" + sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }"); //Account ID + Contact Guid + Contact Email Address
+                        AgentContractContactsListItem(sqlReader.GetString(1) + " " + sqlReader.GetString(4) + " " + "{ Header = Item Level 1 }" + " " + "BidSent = " + sqlReader.GetInt32(15)); //Account ID + Contact Full Name + Bid Sent
+                        AgentContractContactsListItem(sqlReader.GetString(1) + "_" + sqlReader.GetGuid(3) + "_" + sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }" + " " + "{" + sqlReader.GetInt32(14) + "}"); //Account ID + Contact Guid + Contact Email Address + Contract Current Revision
                         // This is for debugging, if any fields get added 
-                        //Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7},\t{8},\t{9},\t{10}", sqlReader.GetString(0), sqlReader.GetGuid(1), sqlReader.GetString(2), sqlReader.GetString(3), sqlReader.GetString(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetDateTime(9), sqlReader.GetDateTime(10));
+                        //Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}\t{15}", sqlReader.GetString(0), sqlReader.GetString(1), sqlReader.GetString(2), sqlReader.GetGuid(3), sqlReader.GetString(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetString(9), sqlReader.GetString(10), sqlReader.GetDateTime(11), sqlReader.GetDateTime(12), sqlReader.GetInt32(13), sqlReader.GetInt32(14), sqlReader.GetInt32(15));
                     }
                 }
                 else
@@ -205,14 +213,19 @@ namespace Nucleus
         /// </summary>
         /// <param name="StartActvities"></param>
         /// <param name="SentProposals"></param>
-        public void PostXmlForSyspro(List<Guid> StartActvities, List<Attachment> SentProposals)
+        public void PostXmlForSyspro(List<Guid> StartActvities, List<Attachment> SentProposals, string _contractId, List<string> CurrentRevision)
         {            
             DateTime bidSentDate = DateTime.Now;
             string formatDate = "yyyy-MM-dd";
             DateTime bidSentTime = DateTime.Now;
             string formatTime = "hh:mm:ss";
             int location = 0;
-            byte proposalBinaryRep;            
+            int currentRevisionLocation = 0;            
+            FileStream inFile;
+            FileStream fs;
+            byte[] proposalBinaryRep;
+            byte[] buffer;
+            string contractId = _contractId;                      
 
             try
             {
@@ -228,7 +241,13 @@ namespace Nucleus
                     string activity_StartTime = "<StartTime>" + bidSentTime.ToString(formatTime) + "</StartTime>";
                     string activity_EndDate = "<EndDate>" + bidSentDate.ToString(formatDate) + "</EndDate>";
                     string activity_EndTime = "<EndTime>" + bidSentTime.ToString(formatTime) + "</EndTime>";
-                    string activity_AcivitySubject = "<Subject>Bid Proposal</Subject>";
+                    foreach(string currentRevisionNum in CurrentRevision)
+                    {
+                        revisionNum = currentRevisionNum;                        
+                        currentRevisionLocation++;
+                        break;
+                    }
+                    string activity_ActivitySubject = "<Subject>" + "Contract:" + contractId + " " + "Revision:" + revisionNum + "</Subject>";
                     string activity_ActivityResult = "<Result>Email sent</Result>";
                     string activity_UserField1 = "<UserField1>User Field 1</UserField1>";
                     string activity_UserField2 = "<UserField1>User Field 2</UserField1>";
@@ -236,22 +255,36 @@ namespace Nucleus
                     string activity_Source = "<Source>DotNet</Source>";
                     string activity_OpenAttachmentsTag = "<Attachments>";
                     string activity_OpenAttachmentTag = "<Attachment>";
-                    foreach (Attachment attachment in SentProposals)
-                    {
-                        string _attachmentName = "<AttachmentName>" + SentProposals[location].Name + "</AttachmentName>";
-                        activity_AttachmentName = _attachmentName;
-                        string _attachmentExt = "<AttachmentExt>pdf</AttachmentExt>";
-                        activity_AttachmentExt = _attachmentExt;
-                        proposalBinaryRep = Convert.ToByte(SentProposals[location].ContentStream.Length);
-                        byte xmlProposalBinaryRepData;
-                        //SentProposals[location].ContentStream.Read(proposalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
-                        SentProposals[location].ContentStream.Close();
-                        xmlProposalBinaryRepData = proposalBinaryRep;
-                        string _attachmentData = "<AttachmentData>" + proposalBinaryRep + "</AttachmentData>";
-                        activity_AttachmentData = _attachmentData;
-                        location++;
-                        break;                       
-                    }
+                    //foreach (Attachment attachment in SentProposals)
+                    //{
+                        //string _attachmentName = "<AttachmentName>" + SentProposals[location].Name + "</AttachmentName>";
+                        //activity_AttachmentName = _attachmentName;
+                        //string _attachmentExt = "<AttachmentExt>pdf</AttachmentExt>";
+                        //activity_AttachmentExt = _attachmentExt;
+                        //proposalBinaryRep = File.ReadAllBytes(SentProposals[location].Name);
+                        //using (fs = new FileStream(SentProposals[location].Name, FileMode.Open, FileAccess.Read))
+                        //{
+                        //    buffer = new byte[fs.Length];
+                        //    fs.Read(buffer, 0, (int)fs.Length);
+                        //}
+                            //long bytesRead = proposalBinaryRep
+                            //inFile = SentProposals[location].ContentStream;
+                            //var path = Path.GetFullPath(SentProposals[location]);
+                            //inFile = new FileStream(path, FileMode.Open, FileAccess.Read);
+                            //proposalBinaryRep = new Byte[inFile.Length];
+                            //proposalBinaryRep = File.ReadAllBytes(attachment);
+                            //proposalBinaryRep = SentProposals[location].ContentStream.ReadByte();
+
+                            //var binaryString = ToBinary(ConvertToByte(SentProposals[location].ContentStream, Encoding.UTF32);
+                            //UInt32 xmlProposalBinaryRepData;
+                            //SentProposals[location].ContentStream.Read(proposalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
+                            //SentProposals[location].ContentStream.Close();
+                            //xmlProposalBinaryRepData = System.Convert.ToUInt32(proposalBinaryRep);//, 0, proposalBinaryRep.Length); 
+                            //string _attachmentData = "<AttachmentData>" + SentProposals[location].Name + "</AttachmentData>";
+                        //activity_AttachmentData = _attachmentData;
+                        //location++;
+                        //break;                       
+                    //}
                     string activity_ClosingAttachmentTag = "</Attachment>";
                     string activity_ClosingAttachmentsTag = "</Attachments>";
                     string activity_ESignature = "<eSignature/>";
@@ -280,7 +313,7 @@ namespace Nucleus
                     activity_XmlDoc.Append(activity_StartTime);
                     activity_XmlDoc.Append(activity_EndDate);
                     activity_XmlDoc.Append(activity_EndTime);
-                    activity_XmlDoc.Append(activity_AcivitySubject);
+                    activity_XmlDoc.Append(activity_ActivitySubject);
                     //activity_XmlDoc.Append("XMLDoc =" + "<Location>Head office</Location>");
                     //activity_XmlDoc.Append("XMLDoc =" + "<Regarding>Sales call</Regarding>");
                     activity_XmlDoc.Append(activity_ActivityResult);
