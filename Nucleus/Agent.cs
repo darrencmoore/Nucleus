@@ -10,7 +10,6 @@ using System.Configuration;
 using System.Text;
 using System.Net.Mail;
 using Agent;
-//using ProLogicReportingApplication;
 
 /// <summary>
 /// Created On: 6/22/2016
@@ -34,6 +33,8 @@ namespace Nucleus
         string activity_AttachmentExt;
         string activity_AttachmentData;
         private static string FUNCTIONALAREA_CMSP = "CMSP";
+        private static string proposalBinaryRep;
+        private static string BID_STATUS = "2";
 
 
         #region Getter/Setter ZContactContractsSelect
@@ -93,7 +94,7 @@ namespace Nucleus
         }
         #endregion
 
-        #region Database Connections and SELECT Statement for tree view
+        #region Database Open/Close Connection 
         /// <summary>
         /// Opens Database Connection
         /// </summary>
@@ -130,7 +131,9 @@ namespace Nucleus
                 return false;
             }
         }
+        #endregion
 
+        #region Get Contacts for TreeView
         /// <summary>
         /// Runs the usp_ContractHeader_pContact stored procedure 
         /// </summary>
@@ -159,7 +162,7 @@ namespace Nucleus
                         _contractCurrentRevisionNum = sqlReader.GetInt32(13); // Contract Current Revision
                         AgentContractContactsListItem(sqlReader.GetString(1) + "_" + sqlReader.GetGuid(3) + "_" + sqlReader.GetString(5) + " " + "{ Header = Item Level 2 }" + " " + "{" + _contractCurrentRevisionNum + "}"); //Account ID + Contact Guid + Contact Email Address + Contract Current Revision                        
                         // This is for debugging, if any fields get added 
-                        Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}", sqlReader.GetString(0), sqlReader.GetString(1), sqlReader.GetString(2), sqlReader.GetGuid(3), sqlReader.GetString(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetString(9), sqlReader.GetString(10), sqlReader.GetDateTime(11), sqlReader.GetDateTime(12), sqlReader.GetInt32(13), sqlReader.GetInt32(14));
+                        //Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\t{8}\t{9}\t{10}\t{11}\t{12}\t{13}\t{14}", sqlReader.GetString(0), sqlReader.GetString(1), sqlReader.GetString(2), sqlReader.GetGuid(3), sqlReader.GetString(4), sqlReader.GetString(5), sqlReader.GetString(6), sqlReader.GetString(7), sqlReader.GetString(8), sqlReader.GetString(9), sqlReader.GetString(10), sqlReader.GetDateTime(11), sqlReader.GetDateTime(12), sqlReader.GetInt32(13), sqlReader.GetInt32(14));
                     }
                 }
                 else
@@ -172,6 +175,33 @@ namespace Nucleus
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+        #endregion
+
+        #region Update Bid Status After Email Sent
+        /// <summary>
+        /// This function updates the Bid Status after email gets sent.
+        /// </summary>
+        /// <param name="contractId"></param>
+        /// <param name="accountId"></param>
+        public void UpdateBidStatus(string contractId, string accountId)
+        {
+            try
+            {
+                SqlDataReader sqlReader;
+                _connStr = ConfigurationManager.ConnectionStrings["SYSPRO_SQL_SERVER"].ConnectionString;
+                DBOpenConnection();
+                _sqlCommand = new SqlCommand("usp_ZContractBidCompaniesStatusUpdate", _sqlConn);
+                _sqlCommand.CommandType = CommandType.StoredProcedure;
+                _sqlCommand.Parameters.Add(new SqlParameter("@Contract", contractId));
+                _sqlCommand.Parameters.Add(new SqlParameter("@Company", accountId));
+                _sqlCommand.Parameters.Add(new SqlParameter("@Status", BID_STATUS));
+                sqlReader = _sqlCommand.ExecuteReader();
+            }
+            catch (SqlException ee)
+            {
+                MessageBox.Show(ee.ToString());
             }
         }
         #endregion
@@ -229,7 +259,7 @@ namespace Nucleus
             int currentRevisionLocation = 0;            
             FileStream inFile;
             FileStream fs;
-            byte[] proposalBinaryRep;
+            
             byte[] buffer;
             string contractId = _contractId;                      
 
@@ -241,7 +271,7 @@ namespace Nucleus
                     string activity_OpenItemTag = "<Item>";
                     string activity_ContactGuid = "<ContactId>{" + activity + "}</ContactId>";
                     string activity_OpenActivityTag = "<Activity>";
-                    string activity_ActivityType = "<ActivityType>12</ActivityType >";
+                    string activity_ActivityType = "<ActivityType>12</ActivityType>";
                     string activity_PrivateTag = "<Private>N</Private>";
                     string activity_StartDate = "<StartDate>" + bidSentDate.ToString(formatDate) + "</StartDate>";
                     string activity_StartTime = "<StartTime>" + bidSentTime.ToString(formatTime) + "</StartTime>";
@@ -255,42 +285,25 @@ namespace Nucleus
                     }
                     string activity_ActivitySubject = "<Subject>" + "Contract:" + contractId + " " + "Revision:" + revisionNum + "</Subject>";
                     string activity_ActivityResult = "<Result>Email sent</Result>";
-                    string activity_UserField1 = "<UserField1>User Field 1</UserField1>";
-                    string activity_UserField2 = "<UserField1>User Field 2</UserField1>";
-                    string activity_UserField3 = "<UserField1>User Field 3</UserField1>";
-                    string activity_Source = "<Source>DotNet</Source>";
+                    string activity_UserField1 = "<UserField1>" + "[Blank]" + "</UserField1>";
+                    string activity_UserField2 = "<UserField2>User Field 2</UserField2>";
+                    string activity_UserField3 = "<UserField3>User Field 3</UserField3>";
+                    string activity_Source = "<Source>" + "SYSPRO CMS BO" + "</Source>";
                     string activity_OpenAttachmentsTag = "<Attachments>";
                     string activity_OpenAttachmentTag = "<Attachment>";
-                    //foreach (Attachment attachment in SentProposals)
-                    //{
-                        //string _attachmentName = "<AttachmentName>" + SentProposals[location].Name + "</AttachmentName>";
-                        //activity_AttachmentName = _attachmentName;
-                        //string _attachmentExt = "<AttachmentExt>pdf</AttachmentExt>";
-                        //activity_AttachmentExt = _attachmentExt;
-                        //proposalBinaryRep = File.ReadAllBytes(SentProposals[location].Name);
-                        //using (fs = new FileStream(SentProposals[location].Name, FileMode.Open, FileAccess.Read))
-                        //{
-                        //    buffer = new byte[fs.Length];
-                        //    fs.Read(buffer, 0, (int)fs.Length);
-                        //}
-                            //long bytesRead = proposalBinaryRep
-                            //inFile = SentProposals[location].ContentStream;
-                            //var path = Path.GetFullPath(SentProposals[location]);
-                            //inFile = new FileStream(path, FileMode.Open, FileAccess.Read);
-                            //proposalBinaryRep = new Byte[inFile.Length];
-                            //proposalBinaryRep = File.ReadAllBytes(attachment);
-                            //proposalBinaryRep = SentProposals[location].ContentStream.ReadByte();
-
-                            //var binaryString = ToBinary(ConvertToByte(SentProposals[location].ContentStream, Encoding.UTF32);
-                            //UInt32 xmlProposalBinaryRepData;
-                            //SentProposals[location].ContentStream.Read(proposalBinaryRep, 0, (int)SentProposals[location].ContentStream.Length);
-                            //SentProposals[location].ContentStream.Close();
-                            //xmlProposalBinaryRepData = System.Convert.ToUInt32(proposalBinaryRep);//, 0, proposalBinaryRep.Length); 
-                            //string _attachmentData = "<AttachmentData>" + SentProposals[location].Name + "</AttachmentData>";
-                        //activity_AttachmentData = _attachmentData;
-                        //location++;
-                        //break;                       
-                    //}
+                    foreach (Attachment attachment in SentProposals)
+                    {
+                        string _attachmentNameHolder = SentProposals[location].Name;
+                        string _attachmentName = _attachmentNameHolder.Remove(0, 29);                
+                        activity_AttachmentName = "<AttachmentName>" + _attachmentName + "</AttachmentName>";
+                        string _attachmentExt = "<AttachmentExt>pdf</AttachmentExt>";
+                        activity_AttachmentExt = _attachmentExt;
+                        var path = Path.GetFullPath(SentProposals[location].Name);
+                        proposalBinaryRep = BitConverter.ToString(File.ReadAllBytes(path)).Replace("-","");
+                        activity_AttachmentData = "<AttachmentData>" + proposalBinaryRep + "</AttachmentData>";
+                        location++;
+                        break;
+                    }
                     string activity_ClosingAttachmentTag = "</Attachment>";
                     string activity_ClosingAttachmentsTag = "</Attachments>";
                     string activity_ESignature = "<eSignature/>";
@@ -354,7 +367,7 @@ namespace Nucleus
                     Encore.Utilities sessionInstance = new Encore.Utilities();
                     string sessionID = sessionInstance.Logon(_availableOperator, "uP1ndkE9", "TEST", " ", Encore.Language.ENGLISH, 0, 0, " ");
                     Encore.Transaction postActivity = new Encore.Transaction();
-                    postActivity.Post(sessionID, "CMSTAT", activity_XmlParam.ToString(), activity_XmlDoc.ToString());
+                    string xmlOut = postActivity.Post(sessionID, "CMSTAT", activity_XmlParam.ToString(), activity_XmlDoc.ToString());
                     sessionInstance.Logoff(sessionID);
 
                     ClearOperator(_availableOperator);                                       
@@ -368,6 +381,10 @@ namespace Nucleus
         #endregion
 
         #region Get Available Operator
+        /// <summary>
+        /// Get the next available operator for post to SYSPRO business object.
+        /// </summary>
+        /// <returns></returns>
         private string GetOperator()
         {
             try
@@ -400,6 +417,10 @@ namespace Nucleus
         #endregion
 
         #region Clear Operator
+        /// <summary>
+        /// Marks the current operator to used after post to SYSPRO business object
+        /// </summary>
+        /// <param name="usedOperator"></param>
         private void ClearOperator(string usedOperator)
         {
             SqlDataReader sqlReader;
@@ -410,7 +431,6 @@ namespace Nucleus
             _sqlCommand.Parameters.Add(new SqlParameter("@UserID", usedOperator));            
             sqlReader = _sqlCommand.ExecuteReader();
         }
-
         #endregion
     }
 }
