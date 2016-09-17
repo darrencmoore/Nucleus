@@ -271,6 +271,7 @@ namespace Nucleus
                     string activity_OpenItemTag = "<Item>";
                     string activity_ContactGuid = "<ContactId>{" + activity + "}</ContactId>";
                     string activity_OpenActivityTag = "<Activity>";
+                    string activity_ContainsHexData = "<ContainsHexEncoding>Y</ContainsHexEncoding>";
                     string activity_ActivityType = "<ActivityType>12</ActivityType>";
                     string activity_PrivateTag = "<Private>N</Private>";
                     string activity_StartDate = "<StartDate>" + bidSentDate.ToString(formatDate) + "</StartDate>";
@@ -296,8 +297,8 @@ namespace Nucleus
                         string _attachmentNameHolder = SentProposals[location].Name;
                         string _attachmentName = _attachmentNameHolder.Remove(0, 29);                
                         activity_AttachmentName = "<AttachmentName>" + _attachmentName + "</AttachmentName>";
-                        string _attachmentExt = "<AttachmentExt>pdf</AttachmentExt>";
-                        activity_AttachmentExt = _attachmentExt;
+                        string _attachmentExt = "<AttachmentExt>pdf</AttachmentExt>";                        
+                        activity_AttachmentExt = _attachmentExt;                       
                         var path = Path.GetFullPath(SentProposals[location].Name);
                         proposalBinaryRep = BitConverter.ToString(File.ReadAllBytes(path)).Replace("-","");
                         activity_AttachmentData = "<AttachmentData>" + proposalBinaryRep + "</AttachmentData>";
@@ -326,6 +327,7 @@ namespace Nucleus
                     activity_XmlDoc.Append(activity_OpenItemTag);
                     activity_XmlDoc.Append(activity_ContactGuid);
                     activity_XmlDoc.Append(activity_OpenActivityTag);
+                    activity_XmlDoc.Append(activity_ContainsHexData);
                     activity_XmlDoc.Append(activity_ActivityType);
                     activity_XmlDoc.Append(activity_PrivateTag);
                     activity_XmlDoc.Append(activity_StartDate);
@@ -353,7 +355,7 @@ namespace Nucleus
                     activity_XmlDoc.Append(activity_OpenAttachmentsTag);
                     activity_XmlDoc.Append(activity_OpenAttachmentTag);
                     activity_XmlDoc.Append(activity_AttachmentName);
-                    activity_XmlDoc.Append(activity_AttachmentExt);
+                    activity_XmlDoc.Append(activity_AttachmentExt);                    
                     activity_XmlDoc.Append(activity_AttachmentData);
                     activity_XmlDoc.Append(activity_ClosingAttachmentTag);
                     activity_XmlDoc.Append(activity_ClosingAttachmentsTag);
